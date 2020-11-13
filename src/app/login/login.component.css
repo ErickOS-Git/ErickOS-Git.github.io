@@ -1,0 +1,23 @@
+.mat-form-field {
+    width: 100%;
+    min-width: 300px;
+}
+
+mat-card-title,
+mat-card-content {
+    display: flex;
+    justify-content: center;
+}
+
+.fundo {
+    background-color: #007bff;
+}
+
+.button {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.bg-primary {
+    background-color: #007bff !important;
+}

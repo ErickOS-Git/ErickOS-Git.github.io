@@ -1,0 +1,13 @@
+
+mat-radio-button {
+    margin-left: 16px;
+    flex-direction: row;
+}
+
+.taxa {
+    margin-left: 20px;
+}
+
+.full-width {
+    width: 100%;
+}

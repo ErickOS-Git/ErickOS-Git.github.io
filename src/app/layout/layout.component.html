@@ -1,0 +1,113 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <button mat-icon-button>
+        <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+      </button>
+      <h1>GenrenciaRE</h1>
+      <span class="menu-spacer"></span>   
+      <span class="spacer"></span>       
+   <div>
+    <a mat-button > Usuario conectado {{ usuarioLogado }} </a>
+   </div>
+      
+    
+    </mat-toolbar-row>
+     
+    
+  </mat-toolbar>
+
+  <mat-sidenav-container>
+    <mat-sidenav #sidenav>
+      <mat-nav-list>
+        <div > Sistema</div>
+
+
+        <mat-nav-list>
+
+            <a mat-list-item class="nav-link" routerLink="/clientes/principal" routerLinkActive="selected">
+                <div class="sb-nav-link-icon "> <span class="material-icons "> 
+                    home    
+                </span> </div>
+                <div class="sb-nav-link-icon"> Home </div> 
+                 
+            </a>
+
+        </mat-nav-list>
+
+        <div >Consulta / Cadastro</div>
+
+
+        <mat-nav-list>
+
+            <a mat-list-item class="nav-link" routerLink="/clientes/principal" routerLinkActive="selected">
+                <div class="sb-nav-link-icon "> <span class="material-icons "> 
+                    face    
+                </span> </div>
+                <div class="sb-nav-link-icon"> Clientes </div> 
+                 
+            </a>
+
+        </mat-nav-list>
+
+        <mat-nav-list>
+
+            <a mat-list-item class="nav-link " routerLink="/produtos/principal" routerLinkActive="selected">
+                <div class="sb-nav-link-icon "> <span class="material-icons "> 
+                    <i class="fab fa-product-hunt"></i>
+                </span> </div>
+                <div class="sb-nav-link-icon"> Produtos </div>                         
+            </a>
+
+        </mat-nav-list>               
+
+        <mat-nav-list>
+            <a mat-list-item class="nav-link " routerLink="/fornecedores/principal" routerLinkActive="selected">
+                <div class="sb-nav-link-icon ">
+                    <span class="material-icons "> shopping_cart</span> </div>
+                    <div class="sb-nav-link-icon"> Fornecedores </div>                         
+            </a>
+        </mat-nav-list>
+
+        <mat-nav-list>
+            <a mat-list-item class="nav-link " routerLink="/forma-pagamento/principal" routerLinkActive="selected">
+                <div class="sb-nav-link-icon ">
+                    <span class="material-icons "> payment </span> </div>
+                    <div class="sb-nav-link-icon"> Forma de Pagamento </div>                         
+            </a>
+        </mat-nav-list>
+
+        <div class="sb-sidenav-menu-heading">Configurações Gerais</div>
+
+        <mat-nav-list>
+
+            <a mat-list-item class="nav-link"  routerLink="/configuracoes" routerLinkActive="selected">
+                <div class="sb-nav-link-icon "> <span class="material-icons "> 
+                    settings    
+                </span> </div>
+                <div class="sb-nav-link-icon"> Configurações </div>  
+            </a>
+
+        </mat-nav-list>
+
+        <div class="sb-sidenav-menu-heading ">Logout</div>
+
+        <mat-nav-list>
+            <a mat-list-item class="nav-link " href="# " (click)="logout(); ">
+                <div class="sb-nav-link-icon "></div>
+                <span class="material-icons ">
+                exit_to_app</span> Sair
+            </a>
+        </mat-nav-list>
+  
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div style="height: 88vh;">
+  
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  
+  
+  

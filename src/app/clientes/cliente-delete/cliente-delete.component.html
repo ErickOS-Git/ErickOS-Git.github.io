@@ -1,0 +1,27 @@
+<mat-card style="text-align: center;">
+    <mat-card-header>
+
+        <mat-card-title>
+            Confirmar
+        </mat-card-title>
+
+    </mat-card-header>
+
+    <mat-card-content>
+        Deseja Confirma a deleção do(a) Cliente <strong>{{ cliente.nome }}</strong> ?
+    </mat-card-content>
+
+    <mat-card-actions>
+        
+        <button mat-stroked-button color="primary" [mat-dialog-close]="true"> 
+            <mat-icon>delete</mat-icon>        
+            Confirmar
+        </button>
+
+        <button mat-stroked-button style="color: #868d95;" (click)="fechar()">     
+            <mat-icon>cancel</mat-icon>      
+            Cancelar
+        </button>
+
+    </mat-card-actions>
+</mat-card>

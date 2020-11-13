@@ -1,0 +1,28 @@
+<mat-card style="text-align: center;">
+    <mat-card-header>
+
+        <mat-card-title>
+            <div matDialogTitle>Confirmação</div>
+        </mat-card-title>
+
+    </mat-card-header>
+
+    <mat-card-content>
+        <div mat-dialog-content>Deseja Confirma a deleção do(a) Fornecedor <strong>{{ fornecedor.razaoSocial }}</strong> ?</div>
+    </mat-card-content>
+
+    <mat-card-actions>
+
+        <mat-spinner [diameter]="30" *ngIf="progress"> </mat-spinner>
+        <button mat-stroked-button color="primary" *ngIf="!progress" [mat-dialog-close]="true"> 
+                <mat-icon>delete</mat-icon>        
+                Confirmar
+            </button>
+
+        <button mat-stroked-button style="color: #868d95;" *ngIf="!progress" (click)="fechar()">     
+                <mat-icon>cancel</mat-icon>      
+                Cancelar
+            </button>
+
+    </mat-card-actions>
+</mat-card>

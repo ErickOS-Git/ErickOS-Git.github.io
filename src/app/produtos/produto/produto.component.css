@@ -1,0 +1,21 @@
+.valor {
+    text-align: right;
+}
+
+input.valor::-webkit-outer-spin-button,
+input.valor::-webkit-inner-spin-button {
+    display: none;
+}
+
+input.valor {
+    -moz-appearance: textfield;
+}
+
+.full-width {
+    width: 100%;
+}
+
+th {
+    font-weight: bold;
+    color: black;
+}

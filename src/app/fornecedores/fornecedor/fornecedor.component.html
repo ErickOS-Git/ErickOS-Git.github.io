@@ -1,0 +1,284 @@
+<mat-tab-group>
+    <mat-tab Label="Novo fornecedor">
+
+        <ng-template mat-tab-label>
+            <mat-icon>add</mat-icon>
+            Novo Fornecedor
+        </ng-template>
+
+        <mat-card>
+            <br><br>
+                <mat-card-title>Cadastro</mat-card-title> <br>
+            <mat-divider></mat-divider> <br>
+            <mat-card-content>
+
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+                    <mat-card-subtitle fxFlex="100">
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active"> Dados Fornecedor </li>
+                        </ol>
+                    </mat-card-subtitle>
+                </div>
+
+                <form fxLayout="column" [formGroup]="formulario" (ngSubmit)="submit()">
+
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+                        <div fxFlex="21">
+                            <mat-slide-toggle color="primary" type="checkbox" formControlName="checked">Pessoa Física ?</mat-slide-toggle>
+                        </div>
+
+                    </div>
+
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px" *ngIf="formulario.controls.id.value">
+
+                        <mat-form-field fxFlex="15">
+                            <mat-label>ID :</mat-label>
+                            <input matInput value="{{ fornecedorNovo.id }}" disabled>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="15">
+                            <mat-label>Data de Cadastro:</mat-label>
+                            <input matInput [textMask]="{mask: mascaraData, guide: false}" value="{{ fornecedorNovo.dataCadastro }}" disabled>
+                        </mat-form-field>
+
+                    </div>
+
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field class="full-width" fxFlex="100">
+                            <mat-label>Razão social</mat-label>
+                            <input matInput formControlName="razaoSocial">
+                        </mat-form-field>
+
+                    </div>
+
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field *ngIf="!formulario.controls.checked.value" fxFlex="20">
+                            <mat-label>CNPJ</mat-label>
+                            <input matInput formControlName="cnpj" [textMask]="{mask: mascaraCnpj, guide: false}">
+                        </mat-form-field>
+
+                        <mat-form-field *ngIf="formulario.controls.checked.value" fxFlex="20">
+                            <mat-label>CPF</mat-label>
+                            <input matInput formControlName="cpf" [textMask]="{mask: mascaraCpf, guide: false}">
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20">
+                            <mat-label>Inscrição Estadual</mat-label>
+                            <input matInput formControlName="inscricaoEstadual">
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20">
+                            <mat-label>Inscrição Municiapal</mat-label>
+                            <input matInput formControlName="inscricaoMunicipal">
+                        </mat-form-field>
+
+
+                        <mat-form-field fxFlex="15" color="primary">
+                            <mat-label>Data de abertura</mat-label>
+                            <input matInput type="date" formControlName="dataAbertura">
+                        </mat-form-field>
+
+                    </div>
+
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+
+
+                        <mat-form-field fxFlex="15">
+                            <mat-label>Celular :</mat-label>
+                            <input matInput formControlName="celular" [textMask]="{mask: mascaraCelular, guide: false}" name="celular">
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="12">
+                            <mat-label>Telefone :</mat-label>
+                            <input matInput formControlName="telefone" [textMask]="{mask: mascaraTelefoneFixo, guide: false}" name="telefone">
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="30">
+                            <mat-label>Email:</mat-label>
+                            <input matInput formControlName="email" placeholder="Email:">
+                            <mat-error *ngIf="formulario.controls.email.errors && !formulario.controls.email.pristine">
+                                <mat-error *ngIf="formulario.controls.email.errors.email">
+                                    Email inválido
+                                </mat-error>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="30">
+                            <mat-label>Site :</mat-label>
+                            <input matInput formControlName="site" placeholder="Site :">
+                        </mat-form-field>
+
+                    </div>
+
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+                        <mat-card-subtitle fxFlex="100">
+                            <ol class="breadcrumb mb-4">
+                                <li class="breadcrumb-item active"> Endereço </li>
+                            </ol>
+                        </mat-card-subtitle>
+                    </div>
+
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field fxFlex="12">
+                            <mat-label>CEP :</mat-label>
+                            <input matInput formControlName="cep" placeholder="CEP:" (keyup)="buscarCep($event)">
+                        </mat-form-field>
+
+
+                        <mat-form-field fxFlex="45">
+                            <mat-label>Bairro :</mat-label>
+                            <input matInput formControlName="bairro" placeholder="Endereço:">
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="45">
+                            <mat-label>Endereço :</mat-label>
+                            <input matInput formControlName="endereco" placeholder="Endereço:">
+                        </mat-form-field>
+
+
+
+                    </div>
+
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field fxFlex="30">
+                            <mat-label>Cidade :</mat-label>
+                            <input matInput formControlName="cidade" placeholder="Cidade :">
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="12">
+                            <mat-label>Estado :</mat-label>
+                            <input matInput formControlName="estado" placeholder="Estado :">
+                        </mat-form-field>
+
+
+                        <mat-form-field fxFlex="12">
+                            <mat-label>Nº :</mat-label>
+                            <input matInput formControlName="numero" placeholder="Complemento:">
+                        </mat-form-field>
+
+                    </div>
+
+
+                    <div class="input-row">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label>Observação:</mat-label>
+                            <textarea matInput formControlName="observacao" name="observacao"></textarea>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="50px" fxLayoutGap.lt-md="0px">
+
+                        <mat-spinner [diameter]="30" *ngIf="progress"> </mat-spinner>
+                        <button mat-stroked-button [disabled]="formulario.invalid" type="submit" *ngIf="!formulario.controls.id.value && !progress" color="primary"> 
+                             <mat-icon>save</mat-icon>                              
+                            Cadastrar
+                        </button>
+
+                        <button mat-stroked-button type="button" *ngIf="formulario.controls.id.value && !progress" (click)="atualizarFornecedor($event)" [disabled]="formulario.invalid" color="primary"> 
+                            <mat-icon>refresh</mat-icon>                              
+                            Atualizar
+                        </button>
+
+                        <button mat-stroked-button type="button" *ngIf="formulario.controls.id.value && !progress" (click)="preparaDelecaoForm(formulario.value, $event)" [disabled]="formulario.invalid" color="warn"> 
+                            <mat-icon>delete</mat-icon>                              
+                            Apagar
+                        </button>
+
+                        <button mat-stroked-button *ngIf="formulario.controls.id.value && !progress" (click)="novoCliente($event)" style=" color: #28a745"> 
+                            <mat-icon>add</mat-icon>                              
+                            Novo cliente
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </mat-card-content>
+        </mat-card>
+
+    </mat-tab>
+    <mat-tab Label="Fornecedores">
+        <ng-template mat-tab-label>
+            <mat-icon>list</mat-icon>
+            Fornecedores
+        </ng-template>
+      
+            
+
+            <mat-card>
+                <br>
+                <br>
+
+                <mat-card-title>Fornecedores</mat-card-title> <br>
+
+                <mat-card-content>
+
+                    <mat-divider></mat-divider> <br>
+
+                    <mat-form-field class="full-width">
+                        <mat-label>Buscar Cliente</mat-label>
+                        <input matInput placeholder="buscar" (keyup)="applyFilter($event)">
+                    </mat-form-field>
+                    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 full-width">
+
+
+                        <ng-container matColumnDef="id">
+                            <th mat-header-cell *matHeaderCellDef> ID </th>
+                            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="razaoSocial">
+                            <th mat-header-cell *matHeaderCellDef>Razão Social</th>
+                            <td mat-cell *matCellDef="let fornecedor">{{ fornecedor.razaoSocial }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="cnpj_cpf">
+                            <th mat-header-cell *matHeaderCellDef>CNPJ / CPF </th>
+                            <td mat-cell *matCellDef="let fornecedor">{{ fornecedor.cnpj}} {{ fornecedor.cpf}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="tipo">
+                            <th mat-header-cell *matHeaderCellDef>Tipo</th>
+                            <td mat-cell *matCellDef="let fornecedor">{{ fornecedor.tipo }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="dataCadastro">
+                            <th mat-header-cell *matHeaderCellDef>Data de Cadastro</th>
+                            <td mat-cell *matCellDef="let fornecedor">{{ fornecedor.dataCadastro }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="detalhes">
+                            <th mat-header-cell *matHeaderCellDef>Detalhes</th>
+                            <td mat-cell *matCellDef="let fornecedor">
+                                <button mat-icon-button (click)="detalhesFornecedor(fornecedor)"> 
+                                <mat-icon color="primary">assignment</mat-icon>
+                              </button>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="apagar">
+                            <th mat-header-cell *matHeaderCellDef>Apagar</th>
+                            <td mat-cell *matCellDef="let fornecedor">
+                                <button mat-icon-button *ngIf="!progress" (click)="preparaDelecaoList(fornecedor, $event)"> 
+                                <mat-icon color="warn">delete_forever</mat-icon>
+                              </button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="colunas"></tr>
+                        <tr mat-row *matRowDef="let row; columns: colunas;"></tr>
+                    </table>
+
+                    <mat-paginator [length]="totalElementos" [pageIndex]="pagina" [pageSize]="tamanho" [pageSizeOptions]="pageSizeOptions" showFirstLastButtons (page)="paginar($event)"></mat-paginator>
+
+                </mat-card-content>
+            </mat-card>
+       
+    </mat-tab>
+</mat-tab-group>

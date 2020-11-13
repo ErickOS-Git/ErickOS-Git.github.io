@@ -1,0 +1,41 @@
+<mat-card style="text-align: center;">
+    <mat-card-header>
+
+        <mat-card-title>
+            Confirmar
+        </mat-card-title>
+
+    </mat-card-header>
+
+    <div *ngIf="produto.nomeProduto">
+        <mat-card-content>
+            Deseja Confirmar a deleção do Produto <strong>{{ produto.nomeProduto }}</strong> ?
+        </mat-card-content>
+    </div>
+
+    <div *ngIf="categoria.nomeCategoriaProduto">
+        <mat-card-content>
+            Deseja Confirmar a deleção da Categoria <strong>{{ categoria.nomeCategoriaProduto }}</strong> ?
+        </mat-card-content>
+    </div>
+
+    <div *ngIf="tipo.nomeTipoProduto">
+        <mat-card-content>
+            Deseja Confirmar a deleção do Tipo <strong>{{ tipo.nomeTipoProduto }}</strong> ?
+        </mat-card-content>
+    </div>
+
+    <mat-card-actions>
+
+        <button mat-stroked-button color="primary" [mat-dialog-close]="true"> 
+            <mat-icon>delete</mat-icon>        
+            Confirmar
+        </button>
+
+        <button mat-stroked-button style="color: #868d95;" (click)="fechar()">     
+            <mat-icon>cancel</mat-icon>      
+            Cancelar
+        </button>
+
+    </mat-card-actions>
+</mat-card>

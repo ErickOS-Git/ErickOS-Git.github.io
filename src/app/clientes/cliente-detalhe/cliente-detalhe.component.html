@@ -1,0 +1,207 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Atualizar Cadastro</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <br>
+        <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+            <ol class="breadcrumb mb-4" fxFlex="100">
+                <li class="breadcrumb-item active"> Dados Pessoais </li>
+            </ol>
+
+        </div>
+
+        <form fxLayout="column" [formGroup]='formulario'>
+
+            <div class="input-row" *ngIf="formulario.controls.id.value" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+                <mat-form-field fxFlex="10">
+                    <mat-label>ID:</mat-label>
+                    <input matInput value="{{ clienteAtualizado.id }}" disabled>
+                </mat-form-field>
+
+                <mat-form-field fxFlex="15">
+                    <mat-label>Data de Cadastro:</mat-label>
+                    <input matInput [textMask]="{mask: mascaraData, guide: false}" value="{{ clienteAtualizado.dataCadastro }}" disabled>
+                </mat-form-field>
+
+            </div>
+
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+                <mat-form-field class="full-width" fxFlex="30">
+                    <mat-label>Nome completo: </mat-label>
+                    <input matInput formControlName="nome" placeholder="Nome completo:">
+                    <mat-error *ngIf="formulario.controls.nome.errors && !formulario.controls.nome.pristine">
+                        <mat-error *ngIf="formulario.controls.nome.errors.required ">
+                            Campo nome é obrigatório.
+                        </mat-error>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex="15" color="primary">
+                    <mat-label>Data de nascimento</mat-label>
+                    <input matInput type="date" formControlName="dataNascimento">
+                    <mat-error *ngIf="formulario.controls.dataNascimento.errors && !formulario.controls.dataNascimento.pristine">
+                        <mat-error *ngIf="formulario.controls.dataNascimento.errors.required ">
+                            Campo Data de nascimento é obrigatório.
+                        </mat-error>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex="14">
+                    <mat-label>CPF:</mat-label>
+                    <input matInput formControlName="cpf" [textMask]="{mask: mascaraCpf, guide: false}" placeholder="CPF:">
+                    <mat-error *ngIf="formulario.controls.cpf.errors && !formulario.controls.cpf.pristine">
+                        <mat-error *ngIf="formulario.controls.cpf.errors.required ">
+                            Campo cpf é obrigatório.
+                        </mat-error>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex="14">
+                    <mat-label>RG:</mat-label>
+                    <input matInput formControlName="rg" placeholder="RG:">
+                </mat-form-field>
+
+                <div fxFlex=10>
+                    <mat-radio-group formControlName="sexo">
+                        <mat-radio-button value="M">Masculino</mat-radio-button>
+                        <mat-radio-button value="F">Feminino</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+
+
+            </div>
+
+
+
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+                <mat-form-field fxFlex="30">
+                    <mat-label>Email:</mat-label>
+                    <input matInput formControlName="email" placeholder="Email:">
+                </mat-form-field>
+
+                <mat-form-field fxFlex="15">
+                    <mat-label>Celular:</mat-label>
+                    <input matInput formControlName="celular" [textMask]="{mask: mascaraCelular, guide: false}" name="celular">
+                </mat-form-field>
+
+                <mat-form-field fxFlex="15">
+                    <mat-label>Telefone:</mat-label>
+                    <input matInput formControlName="telefone" [textMask]="{mask: mascaraTelefoneFixo, guide: false}" name="telefone">
+                </mat-form-field>
+
+            </div>
+
+            <br>
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+                <ol class="breadcrumb mb-4" fxFlex="100">
+                    <li class="breadcrumb-item active"> Endereço Principal </li>
+                </ol>
+
+            </div>
+
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+                <mat-form-field fxFlex="12">
+                    <mat-label>CEP:</mat-label>
+                    <input matInput formControlName="cep1" placeholder="CEP:" (keyup)="buscarCep1($event)">
+                </mat-form-field>
+
+
+                <mat-form-field fxFlex="45">
+                    <mat-label>Bairro:</mat-label>
+                    <input matInput formControlName="bairro1" placeholder="Endereço:">
+                </mat-form-field>
+
+
+                <mat-form-field fxFlex="45">
+                    <mat-label>Endereço:</mat-label>
+                    <input matInput formControlName="lagradouro1" placeholder="Endereço:">
+                </mat-form-field>
+
+
+            </div>
+
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+                <mat-form-field fxFlex="45">
+                    <mat-label>Complemento:</mat-label>
+                    <input matInput formControlName="complemento1" placeholder="Complemento:">
+                </mat-form-field>
+
+                <mat-form-field fxFlex="12">
+                    <mat-label>Nº :</mat-label>
+                    <input matInput formControlName="numero1" placeholder="Complemento:">
+                </mat-form-field>
+
+            </div>
+            <br>
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+                <ol class="breadcrumb mb-4" fxFlex="100">
+                    <li class="breadcrumb-item active"> Endereço Secundário </li>
+                </ol>
+
+            </div>
+
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+                <mat-form-field fxFlex="12">
+                    <mat-label>CEP:</mat-label>
+                    <input matInput formControlName="cep2" placeholder="CEP:" (keyup)="buscarCep2($event)">
+                </mat-form-field>
+
+
+                <mat-form-field fxFlex="45">
+                    <mat-label>Bairro:</mat-label>
+                    <input matInput formControlName="bairro2" placeholder="Endereço:">
+                </mat-form-field>
+
+
+                <mat-form-field fxFlex="45">
+                    <mat-label>Endereço:</mat-label>
+                    <input matInput formControlName="lagradouro2" placeholder="Endereço:">
+                </mat-form-field>
+
+
+            </div>
+
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+                <mat-form-field fxFlex="45">
+                    <mat-label>Complemento:</mat-label>
+                    <input matInput formControlName="complemento2" placeholder="Complemento:">
+                </mat-form-field>
+
+                <mat-form-field fxFlex="12">
+                    <mat-label>Nº :</mat-label>
+                    <input matInput formControlName="numero2" placeholder="Complemento:">
+                </mat-form-field>
+
+            </div>
+
+            <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+                <mat-spinner [diameter]="30" *ngIf="progress"> </mat-spinner>
+                <button mat-stroked-button type="submit" *ngIf="!progress" (click)="atualizarCliente()" [disabled]="formulario.invalid" color="primary"> 
+                    <mat-icon>refresh</mat-icon>                              
+                    Atualizar
+                </button>
+
+                <button mat-stroked-button style="color: #868d95;" *ngIf="!progress" (click)="fechar()">     
+                    <mat-icon>cancel</mat-icon>      
+                    Cancelar
+                </button>
+
+            </div>
+
+            <br>
+        </form>
+
+    </mat-card-content>
+</mat-card>

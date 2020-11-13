@@ -1,0 +1,13 @@
+mat-slide-toggle {
+    margin-bottom: 10px;
+    display: block;
+}
+
+.full-width {
+    width: 100%;
+}
+
+th {
+    font-weight: bold;
+    color: black;
+}

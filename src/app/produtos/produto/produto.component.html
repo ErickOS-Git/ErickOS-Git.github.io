@@ -1,0 +1,483 @@
+<mat-tab-group>
+    <mat-tab label="Novo produto">
+
+        <ng-template mat-tab-label>
+            <mat-icon>add</mat-icon>
+            Novo Produto
+        </ng-template>
+
+        <mat-card>
+            <br> <br>
+
+            <mat-card-title>{{ produtoNovo.id ? "Atualizar" : "Cadastro" }}</mat-card-title> <br>
+
+            <mat-divider></mat-divider> <br>
+            <mat-card-content>
+
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
+                    <mat-card-subtitle fxFlex="100">
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active"> Categoria </li>
+                        </ol>
+                    </mat-card-subtitle>
+                </div>
+
+                <form fxLayout="column" [formGroup]="formProduto" (ngSubmit)="submitProduto()">
+
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                        fxLayoutGap.lt-md="0px" *ngIf="formProduto.controls.id.value">
+                        <mat-form-field fxFlex="15">
+                            <mat-label>ID :</mat-label>
+                            <input matInput value="{{ produtoNovo.id }}" disabled>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-label>Data de Cadastro</mat-label>
+                            <input matInput type="date" value="{{ produtoNovo.dataCadastro }}" disabled>
+                        </mat-form-field>
+                    </div>
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field fxFlex="100">
+                            <mat-label>Descrição</mat-label>
+                            <input matInput formControlName="nomeProduto" placeholder="Descrição">
+                        </mat-form-field>
+
+                    </div>
+
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field fxFlex="50">
+                            <mat-label>Categoria</mat-label>
+                            <mat-select placeholder="selecione a categoria" formControlName="categoriaProduto"
+                                [compareWith]="compararObj">
+                                <mat-option *ngFor="let categoria of carregaCategoriaProdutos" [value]="categoria">
+                                    {{ categoria.nomeCategoriaProduto }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="50">
+                            <mat-label>Tipo</mat-label>
+                            <mat-select placeholder="selecione a tipo" formControlName="tipoProduto"
+                                [compareWith]="compararObj">
+                                <mat-option *ngFor="let tipo of carregaTipoProdutos" [value]="tipo">
+                                    {{ tipo.nomeTipoProduto }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field>
+                            <mat-label>Preço de compra</mat-label>
+                            <input matInput type="number" formControlName="valorCompra" class="valor">
+                            <span matPrefix>R$&nbsp;</span>
+                        </mat-form-field>
+
+
+                        <mat-form-field>
+                            <mat-label>Preço de venda</mat-label>
+                            <input matInput type="number" formControlName="valorVenda" class="valor">
+                            <span matPrefix>R$&nbsp;</span>
+                        </mat-form-field>
+
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="50px" fxLayoutGap.lt-md="0px">
+
+                        <mat-spinner [diameter]="30" *ngIf="progress"> </mat-spinner>
+                        <button mat-stroked-button [disabled]="formProduto.invalid" type="submit"
+                            *ngIf="!formProduto.controls.id.value && !progress" color="primary">
+                            <mat-icon>save</mat-icon>
+                            Cadastrar
+                        </button>
+
+                        <button mat-stroked-button *ngIf="formProduto.controls.id.value && !progress"
+                            [disabled]="formProduto.invalid" (click)="atualizarProdutos($event)" color="primary">
+                            <mat-icon>refresh</mat-icon>
+                            Atualizar
+                        </button>
+
+                        <button mat-stroked-button *ngIf="formProduto.controls.id.value && !progress"
+                            (click)="PreparadeletarProdutoForm(formProduto.value, $event)" color="warn">
+                            <mat-icon>delete</mat-icon>
+                            Apagar
+                        </button>
+
+                        <button mat-stroked-button *ngIf="formProduto.controls.id.value && !progress"
+                            (click)="novoProduto($event)" style=" color: #28a745">
+                            <mat-icon>add</mat-icon>
+                            Novo cliente
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </mat-card-content>
+        </mat-card>
+    </mat-tab>
+
+    <mat-tab label="Categoria do produto">
+        <ng-template mat-tab-label>
+            <mat-icon>add</mat-icon>
+            Nova Categoria Produto
+        </ng-template>
+
+        <mat-card>
+            <br><br>
+            <mat-card-title>{{ categoriaProdutoNovo.id ? "Atualizar" : "Cadastro" }}</mat-card-title> <br>
+
+            <mat-divider></mat-divider> <br>
+
+            <mat-card-content>
+
+                <form fxLayout="column" [formGroup]="formCategoriaProduto" (ngSubmit)="submitCategoriaProduto()">
+
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                        fxLayoutGap.lt-md="0px" *ngIf="formCategoriaProduto.controls.id.value">
+                        <mat-form-field fxFlex="15">
+                            <mat-label>ID :</mat-label>
+                            <input matInput value="{{ categoriaProdutoNovo.id }}" disabled>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-label>Data de Cadastro</mat-label>
+                            <input matInput type="date" value="{{ categoriaProdutoNovo.dataCadastro }}" disabled>
+                        </mat-form-field>
+                    </div>
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field fxFlex="100">
+                            <mat-label>Descrição</mat-label>
+                            <input matInput formControlName="nomeCategoriaProduto" placeholder="Descrição">
+                        </mat-form-field>
+
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="50px" fxLayoutGap.lt-md="0px">
+
+                        <mat-spinner [diameter]="30" *ngIf="progress"> </mat-spinner>
+                        <button mat-stroked-button [disabled]="formCategoriaProduto.invalid" type="submit"
+                            *ngIf="!formCategoriaProduto.controls.id.value && !progress" color="primary">
+                            <mat-icon>save</mat-icon>
+                            Cadastrar
+                        </button>
+
+                        <button mat-stroked-button *ngIf="formCategoriaProduto.controls.id.value && !progress"
+                            [disabled]="formCategoriaProduto.invalid" (click)="atualizarCategoriaProduto($event)"
+                            color="primary">
+                            <mat-icon>refresh</mat-icon>
+                            Atualizar
+                        </button>
+
+                        <button mat-stroked-button *ngIf="formCategoriaProduto.controls.id.value && !progress"
+                            (click)="PreparadeletarCategoriaForm(formCategoriaProduto.value, $event)" color="warn">
+                            <mat-icon>delete</mat-icon>
+                            Apagar
+                        </button>
+
+                        <button mat-stroked-button *ngIf="formCategoriaProduto.controls.id.value && !progress"
+                            (click)="novaCategoria($event)" style=" color: #28a745">
+                            <mat-icon>add</mat-icon>
+                            Nova Categoria
+                        </button>
+
+                    </div>
+                </form>
+
+            </mat-card-content>
+        </mat-card>
+
+
+        <mat-card>
+            <br>
+            <br>
+            <mat-card-header>
+                <mat-card-title>Categorias</mat-card-title> <br>
+            </mat-card-header>
+            <mat-card-content>
+
+                <mat-divider></mat-divider> <br>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Buscar categoria</mat-label>
+                    <input matInput placeholder="buscar" (keyup)="applyFilterCategoria($event)">
+                </mat-form-field>
+                <table mat-table [dataSource]="dataSourceCategoriaProduto" class="mat-elevation-z8 full-width">
+
+
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef> ID </th>
+                        <td mat-cell *matCellDef="let categoria"> {{ categoria.id }} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="categoria">
+                        <th mat-header-cell *matHeaderCellDef>Categoria</th>
+                        <td mat-cell *matCellDef="let categoria">{{ categoria.nomeCategoriaProduto }}</td>
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="dataCadastro">
+                        <th mat-header-cell *matHeaderCellDef>Data de Cadastro</th>
+                        <td mat-cell *matCellDef="let categoria">{{ categoria.dataCadastro }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="detalhes">
+                        <th mat-header-cell *matHeaderCellDef>Detalhes</th>
+                        <td mat-cell *matCellDef="let categoria">
+                            <button mat-icon-button>
+                                <mat-icon color="primary">assignment</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="apagar">
+                        <th mat-header-cell *matHeaderCellDef>Apagar</th>
+                        <td mat-cell *matCellDef="let categoria">
+                            <button mat-icon-button (click)="PreparadeletarCategoriaList(categoria, $event)">
+                                <mat-icon color="warn">delete_forever</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="colunasCategoria"></tr>
+                    <tr mat-row *matRowDef="let row; columns: colunasCategoria;"></tr>
+                </table>
+
+                <mat-paginator [length]="totalElementosCategoria" [pageIndex]="paginaCategoria"
+                    [pageSize]="tamanhoCategoria" [pageSizeOptions]="pageSizeOptionsCategoria" showFirstLastButtons
+                    (page)="paginarCategoria($event)"></mat-paginator>
+
+            </mat-card-content>
+        </mat-card>
+
+
+    </mat-tab>
+
+    <mat-tab label="tipo do Produto">
+        <ng-template mat-tab-label>
+            <mat-icon>add</mat-icon>
+            Novo Tipo Produto
+        </ng-template>
+
+        <mat-card>
+         <br> <br>
+                <mat-card-title>{{ tipoProdutoNovo.id ? "Atualizar" : "Cadastro" }}</mat-card-title> <br>
+            
+                <mat-divider></mat-divider> <br>
+
+            <mat-card-content>
+
+                <form fxLayout="column" [formGroup]="formTipoProduto" (ngSubmit)="submitTipoProduto()">
+
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                        fxLayoutGap.lt-md="0px" *ngIf="formTipoProduto.controls.id.value">
+                        <mat-form-field fxFlex="15">
+                            <mat-label>ID :</mat-label>
+                            <input matInput value="{{ tipoProdutoNovo.id }}" disabled>
+                        </mat-form-field>
+
+                        <mat-form-field>
+                            <mat-label>Data de Cadastro</mat-label>
+                            <input matInput type="texte" value="{{ tipoProdutoNovo.dataCadastro }}" disabled>
+                        </mat-form-field>
+                    </div>
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field fxFlex="100">
+                            <mat-label>Descrição</mat-label>
+                            <input matInput formControlName="nomeTipoProduto" placeholder="Descrição">
+                        </mat-form-field>
+
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="50px" fxLayoutGap.lt-md="0px">
+
+                        <mat-spinner [diameter]="30" *ngIf="progress"> </mat-spinner>
+                        <button mat-stroked-button [disabled]="formTipoProduto.invalid" type="submit"
+                            *ngIf="!formTipoProduto.controls.id.value && !progress" color="primary">
+                            <mat-icon>save</mat-icon>
+                            Cadastrar
+                        </button>
+
+                        <button mat-stroked-button *ngIf="formTipoProduto.controls.id.value && !progress"
+                            [disabled]="formTipoProduto.invalid" (click)="atualizarTipoProduto($event)" color="primary">
+                            <mat-icon>refresh</mat-icon>
+                            Atualizar
+                        </button>
+
+                        <button mat-stroked-button *ngIf="formTipoProduto.controls.id.value && !progress"
+                            (click)="PreparadeleteTipoProdutoForm(formTipoProduto.value, $event)" color="warn">
+                            <mat-icon>delete</mat-icon>
+                            Apagar
+                        </button>
+
+                        <button mat-stroked-button *ngIf="formTipoProduto.controls.id.value && !progress"
+                            (click)="novoTipoProduto($event)" style=" color: #28a745">
+                            <mat-icon>add</mat-icon>
+                            Novo Tipo Produto
+                        </button>
+
+                    </div>
+                </form>
+
+
+
+            </mat-card-content>
+        </mat-card>
+
+
+
+        <mat-card>
+            <br>
+            <br>
+            <mat-card-header>
+                <mat-card-title>Tipos</mat-card-title> <br>
+            </mat-card-header>
+            <mat-card-content>
+
+                <mat-divider></mat-divider> <br>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Buscar Tipo categoria</mat-label>
+                    <input matInput placeholder="buscar" (keyup)="applyFilterTipo($event)">
+                </mat-form-field>
+                <table mat-table [dataSource]="dataSourceTipoProduto" class="mat-elevation-z8 full-width">
+
+
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef> ID </th>
+                        <td mat-cell *matCellDef="let tipo"> {{ tipo.id }} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="tipo">
+                        <th mat-header-cell *matHeaderCellDef>Tipo</th>
+                        <td mat-cell *matCellDef="let tipo">{{ tipo.nomeTipoProduto }}</td>
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="dataCadastro">
+                        <th mat-header-cell *matHeaderCellDef>Data de Cadastro</th>
+                        <td mat-cell *matCellDef="let tipo">{{ tipo.dataCadastro }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="detalhes">
+                        <th mat-header-cell *matHeaderCellDef>Detalhes</th>
+                        <td mat-cell *matCellDef="let tipo">
+                            <button mat-icon-button>
+                                <mat-icon color="primary">assignment</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="apagar">
+                        <th mat-header-cell *matHeaderCellDef>Apagar</th>
+                        <td mat-cell *matCellDef="let categoria">
+                            <button mat-icon-button (click)="PreparadeleteTipoProdutoList(categoria, $event)">
+                                <mat-icon color="warn">delete_forever</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="colunasTipo"></tr>
+                    <tr mat-row *matRowDef="let row; columns: colunasTipo;"></tr>
+                </table>
+
+                <mat-paginator [length]="totalElementosTipo" [pageIndex]="paginaTipo" [pageSize]="tamanhoTipo"
+                    [pageSizeOptions]="pageSizeOptionsTipo" showFirstLastButtons (page)="paginarTipo($event)">
+                </mat-paginator>
+
+            </mat-card-content>
+        </mat-card>
+
+    </mat-tab>
+
+    <mat-tab label="Produtos">
+        <ng-template mat-tab-label>
+            <mat-icon>list</mat-icon>
+            Produtos
+        </ng-template>
+
+
+        <mat-card>
+            <br>
+            <br>
+
+            <mat-card-title>Produtos</mat-card-title> <br>
+
+            <mat-card-content>
+
+                <mat-divider></mat-divider> <br>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Buscar Produtos</mat-label>
+                    <input matInput placeholder="buscar" (keyup)="applyFilterProduto($event)">
+                </mat-form-field>
+                <table mat-table [dataSource]="dataSourceProduto" class="mat-elevation-z8 full-width">
+
+
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef> ID </th>
+                        <td mat-cell *matCellDef="let produto"> {{produto.id}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="produto">
+                        <th mat-header-cell *matHeaderCellDef>Produto</th>
+                        <td mat-cell *matCellDef="let produto">{{ produto.nomeProduto }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="categoria">
+                        <th mat-header-cell *matHeaderCellDef>Categoria</th>
+                        <td mat-cell *matCellDef="let produto">{{ produto.categoriaProduto.nomeCategoriaProduto }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="tipo">
+                        <th mat-header-cell *matHeaderCellDef>Tipo</th>
+                        <td mat-cell *matCellDef="let produto">{{ produto.tipoProduto.nomeTipoProduto }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="dataCadastro">
+                        <th mat-header-cell *matHeaderCellDef>Data de Cadastro</th>
+                        <td mat-cell *matCellDef="let produto">{{ produto.dataCadastro }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="detalhes">
+                        <th mat-header-cell *matHeaderCellDef>Detalhes</th>
+                        <td mat-cell *matCellDef="let produto">
+                            <button mat-icon-button (click)="DetalhesProduto(produto)">
+                                <mat-icon color="primary">assignment</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="apagar">
+                        <th mat-header-cell *matHeaderCellDef>Apagar</th>
+                        <td mat-cell *matCellDef="let produto">
+                            <button mat-icon-button (click)="preparaDelecaoProdutoList(produto,$event)">
+                                <mat-icon color="warn">delete_forever</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="colunasProduto"></tr>
+                    <tr mat-row *matRowDef="let row; columns: colunasProduto;"></tr>
+                </table>
+
+                <mat-paginator [length]="totalElementos" [pageIndex]="pagina" [pageSize]="tamanho"
+                    [pageSizeOptions]="pageSizeOptions" showFirstLastButtons (page)="paginar($event)"></mat-paginator>
+
+            </mat-card-content>
+        </mat-card>
+
+    </mat-tab>
+</mat-tab-group>

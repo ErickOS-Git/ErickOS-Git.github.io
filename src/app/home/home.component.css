@@ -1,0 +1,72 @@
+.pedidos {
+    cursor: pointer;
+    text-align: center;    
+
+    background-image: url('../util/imagens/buttonpedido.png');
+  
+    width: 200px;
+    height: 200px;
+    line-height: 300px;
+  
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: transparent;
+  }  
+
+  .producao{
+    cursor: pointer;
+    text-align: center;    
+
+    background-image: url('../util/imagens/buttonproducao.png');
+  
+    width: 200px;
+    height: 200px;
+    line-height: 300px;
+  
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .status{
+    cursor: pointer;
+    text-align: center;    
+
+    background-image: url('../util/imagens/buttonstatus.png');
+  
+    width: 200px;
+    height: 200px;
+    line-height: 300px;
+  
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .zoom {
+    overflow: hidden;
+  }
+  
+  .zoom div {
+    max-width: 100%;
+    -moz-transition: all 0.3s;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+  }
+  
+  .zoom:hover div {
+    -moz-transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+    transform: scale(1.1);
+  }

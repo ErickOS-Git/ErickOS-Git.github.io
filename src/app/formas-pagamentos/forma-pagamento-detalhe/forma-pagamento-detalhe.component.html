@@ -1,0 +1,69 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Atualizar</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
+        <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+            <mat-card-subtitle fxFlex="100">
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item active">  Forma de Pagamento </li>
+                </ol>
+            </mat-card-subtitle>
+        </div>
+
+        <form fxLayout="column" [formGroup]="formulario">
+        
+
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px" *ngIf="formaPagamentoAtualizado.id">
+
+                <mat-form-field fxFlex="15">
+                    <mat-label>ID :</mat-label>
+                    <input matInput value="{{ formaPagamentoAtualizado.id }}" disabled>
+                </mat-form-field>                  
+
+            </div>
+
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+                <mat-form-field class="full-width" fxFlex="90">
+                    <mat-label>Descrição</mat-label>
+                    <input matInput formControlName="descricao">
+                </mat-form-field>
+
+                <mat-form-field class="taxa" >
+                    <mat-label>Taxa</mat-label>
+                    <input matInput formControlName="taxa">
+                </mat-form-field>      
+
+            </div>
+
+            <div fxFlex=10>
+                <mat-radio-group formControlName="tipoPagamento">
+                    <mat-radio-button value="CC">Cartão de crédito</mat-radio-button>
+                    <mat-radio-button value="CD">Cartão de débito</mat-radio-button>
+                    <mat-radio-button value="BO">Boleto</mat-radio-button>
+                    <mat-radio-button value="DI">Dinheiro</mat-radio-button>
+                </mat-radio-group>                                          
+            </div>
+
+        
+            <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+
+                <mat-spinner [diameter]="30" *ngIf="progress"> </mat-spinner>
+                <button mat-stroked-button type="submit" *ngIf="!progress" (click)="atualizarFormaPagamento()" [disabled]="formulario.invalid" color="primary"> 
+                    <mat-icon>refresh</mat-icon>                              
+                    Atualizar
+                </button>
+
+                <button mat-stroked-button style="color: #868d95;" *ngIf="!progress" (click)="fechar()">     
+                    <mat-icon>cancel</mat-icon>      
+                    Cancelar
+                </button>
+
+            </div>           
+
+        </form>
+
+    </mat-card-content>
+</mat-card>

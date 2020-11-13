@@ -1,0 +1,75 @@
+<div class="bg-primary">
+    <div id="layoutAuthentication">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-5">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header">
+                                    <mat-card-title>
+                                        {{ cadastrando ? 'Cadastro' : 'Entrar' }}
+                                    </mat-card-title>
+
+                                </div>
+                                <div class="card-body">
+                                    <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+                                        <p>
+                                            <mat-form-field>
+                                                <mat-label>Login</mat-label>
+                                                <input matInput placeholder="Digite seu login" [(ngModel)]="username" name="username" id="inputUsername" autocomplete="off">
+                                            </mat-form-field>
+                                        </p>
+
+                                        <p>
+                                            <mat-form-field>
+                                                <mat-label>Senha</mat-label>
+                                                <input matInput placeholder="Digite sua senha" type="password" [(ngModel)]="password" name="password" id="inputPassword">
+                                            </mat-form-field>
+                                        </p>
+
+
+                                        <div>
+                                            <mat-spinner [diameter]="30" *ngIf="progress"> </mat-spinner>
+                                            <button mat-stroked-button color="primary" type="submit" *ngIf="!cadastrando && !progress">
+                                                <mat-icon>send</mat-icon>  
+                                                Enviar
+                                            </button>
+                                        </div>
+
+
+                                        <button mat-stroked-button color="primary" type="button" (click)="cadastrar()" *ngIf="cadastrando">
+                                            Cadastrar</button>
+
+
+
+                                        <button mat-stroked-button class="ml-2" color="warn" type="button" *ngIf="cadastrando" (click)="cancelaCadastro()">
+                                            Cancelar cadastro</button>
+
+                                    </form>
+                                </div>
+                                <div class="card-footer small">
+                                    <a href="" (click)="preparaCadastrar($event)">
+                                        Não possui Usuario? cadastre-se!</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <div id="layoutAuthentication_footer">
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Your Website 2020</div>
+                        <div>
+                            <a href="#">Privacy Policy</a> &middot;
+                            <a href="#">Terms &amp; Conditions</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
