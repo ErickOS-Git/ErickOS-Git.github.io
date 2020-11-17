@@ -374,6 +374,25 @@ export class ProdutoComponent implements OnInit {
       });
   }
 
+  detalhesCategoriaproduto(categoria: CategoriaProduto) {
+    this.dialog.open(ProdutoDetalheComponent, {      
+      data: categoria
+      
+    }).afterClosed().subscribe(response => {
+      if (!this.filtroTableCategoria) {
+        this.listarCategoriaProduto(this.pagina, this.tamanho);
+      } else {
+        this.service.buscarCategoriaProdutos(this.filtroTableCategoria, this.paginaCategoria, this.tamanhoCategoria)
+          .subscribe(responseAt => {
+            this.categorias = responseAt.content;
+            this.totalElementosCategoria = responseAt.totalElements;
+            this.paginaCategoria = responseAt.number;
+            this.dataSourceCategoriaProduto.data = this.categorias;
+          });
+      }
+    });
+  }
+
   novaCategoria(event: Event) {
     event.preventDefault();
     this.categoriaProdutoNovo = new CategoriaProduto();
@@ -487,6 +506,25 @@ export class ProdutoComponent implements OnInit {
         this.errors = errorResponse.error.errors;
         this.service.msg(this.errors, true);
       });
+  }
+
+  detalhesTipoProduto(tipoProduto: TipoProduto) {
+    this.dialog.open(ProdutoDetalheComponent, {      
+      data: tipoProduto
+      
+    }).afterClosed().subscribe(response => {
+      if (!this.filtroTableTipo) {
+        this.listarTipoProduto(this.paginaTipo, this.tamanhoTipo);
+      } else {
+        this.service.buscarProdutos(this.filtroTableTipo, this.paginaTipo, this.tamanhoTipo)
+          .subscribe(responseAt => {
+            this.tipos = responseAt.content;
+            this.totalElementosTipo = responseAt.totalElements;
+            this.paginaTipo = responseAt.number;
+            this.dataSourceTipoProduto.data = this.tipos;
+          });
+      }
+    });
   }
 
   listarTipoProduto(pagina = 0, tamanho = 4) {

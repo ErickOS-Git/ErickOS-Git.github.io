@@ -234,7 +234,7 @@
                     <ng-container matColumnDef="detalhes">
                         <th mat-header-cell *matHeaderCellDef>Detalhes</th>
                         <td mat-cell *matCellDef="let categoria">
-                            <button mat-icon-button>
+                            <button mat-icon-button (click)="detalhesCategoriaproduto(categoria)">
                                 <mat-icon color="primary">assignment</mat-icon>
                             </button>
                         </td>
@@ -270,10 +270,10 @@
         </ng-template>
 
         <mat-card>
-         <br> <br>
-                <mat-card-title>{{ tipoProdutoNovo.id ? "Atualizar" : "Cadastro" }}</mat-card-title> <br>
-            
-                <mat-divider></mat-divider> <br>
+            <br> <br>
+            <mat-card-title>{{ tipoProdutoNovo.id ? "Atualizar" : "Cadastro" }}</mat-card-title> <br>
+
+            <mat-divider></mat-divider> <br>
 
             <mat-card-content>
 
@@ -330,9 +330,6 @@
 
                     </div>
                 </form>
-
-
-
             </mat-card-content>
         </mat-card>
 
@@ -374,7 +371,7 @@
                     <ng-container matColumnDef="detalhes">
                         <th mat-header-cell *matHeaderCellDef>Detalhes</th>
                         <td mat-cell *matCellDef="let tipo">
-                            <button mat-icon-button>
+                            <button mat-icon-button (click)="detalhesTipoProduto(tipo)">
                                 <mat-icon color="primary">assignment</mat-icon>
                             </button>
                         </td>
@@ -382,8 +379,8 @@
 
                     <ng-container matColumnDef="apagar">
                         <th mat-header-cell *matHeaderCellDef>Apagar</th>
-                        <td mat-cell *matCellDef="let categoria">
-                            <button mat-icon-button (click)="PreparadeleteTipoProdutoList(categoria, $event)">
+                        <td mat-cell *matCellDef="let tipo">
+                            <button mat-icon-button (click)="PreparadeleteTipoProdutoList(tipo, $event)">
                                 <mat-icon color="warn">delete_forever</mat-icon>
                             </button>
                         </td>

@@ -21,8 +21,8 @@ export class ProdutoDetalheComponent implements OnInit {
   progress = false;
 
   produtoAtt: Produto;
-  categoriaProdutoAtt:  CategoriaProduto;
-  tipoProdutoAtt:  TipoProduto;
+  categoriaProdutoAtt: CategoriaProduto;
+  tipoProdutoAtt: TipoProduto;
 
   listarCategoriaProdutos: CategoriaProduto[] = [];
   listaTipoProdutos: TipoProduto[] = [];
@@ -38,11 +38,11 @@ export class ProdutoDetalheComponent implements OnInit {
     this.produtoAtt = new Produto();
     this.categoriaProdutoAtt = categoria;
     this.tipoProdutoAtt = tipo;
-   }
+  }
 
   ngOnInit(): void {
     this.produtoAtt = this.produto;
-    this.montarFormulario(this.produtoAtt, this.categoriaProdutoAtt, this.tipo);    
+    this.montarFormulario(this.produtoAtt, this.categoriaProdutoAtt, this.tipo);
     this.carregarCategoriaProduto();
     this.carregarTipoProdutos();
   }
@@ -90,7 +90,6 @@ export class ProdutoDetalheComponent implements OnInit {
   }
 
   atualizarCategoriaProduto() {
-    event.preventDefault();
     this.progress = true;
     this.service.atualizarCategoriaProduto(this.formCategoriaProduto.value)
       .subscribe(response => {
@@ -103,19 +102,8 @@ export class ProdutoDetalheComponent implements OnInit {
       });
   }
 
-  carregarCategoriaProduto() {
-    this.service.carregarCategoriasProdutos()
-      .subscribe(response => {
-        this.listarCategoriaProdutos = response;
-      }, errorResponse => {
-        this.errors = errorResponse.error.errors;
-        console.log(errorResponse);
-        this.service.msg('Não foi possível Carregar as Categorias', true);
-      });
-  }
-
+  
   atualizarTipoProduto() {
-    event.preventDefault();
     this.progress = true;
     this.service.atualizarTipoProduto(this.formTipoProduto.value)
       .subscribe(response => {
@@ -128,7 +116,18 @@ export class ProdutoDetalheComponent implements OnInit {
       });
   }
 
-  carregarTipoProdutos() {
+ carregarCategoriaProduto() {
+    this.service.carregarCategoriasProdutos()
+      .subscribe(response => {
+        this.listarCategoriaProdutos = response;
+      }, errorResponse => {
+        this.errors = errorResponse.error.errors;
+        console.log(errorResponse);
+        this.service.msg('Não foi possível Carregar as Categorias', true);
+      });
+  }
+
+ carregarTipoProdutos() {
     this.service.carregarTipoProdutos()
       .subscribe(response => {
         console.log(response);
@@ -138,7 +137,7 @@ export class ProdutoDetalheComponent implements OnInit {
         console.log(errorResponse);
         this.service.msg('Não foi possível Carregar os tipos', true);
       });
-  }
+  } 
 
   fechar(event: Event) {
     event.preventDefault();
