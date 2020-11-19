@@ -23,6 +23,7 @@ export class ClienteComponent implements OnInit {
 
   mascaraData = MascaraUtil.mascaraNascimento;
   mascaraCpf = MascaraUtil.mascaraCpf;
+  mascaraRg = MascaraUtil.mascaraRg;
   mascaraCelular = MascaraUtil.mascaraCelular;
   mascaraTelefoneFixo = MascaraUtil.mascaraTelefoneFixo;
   errors: string;

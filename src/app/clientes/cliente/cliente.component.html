@@ -51,8 +51,8 @@
                         fxLayoutGap.lt-md="0px">
 
                         <mat-form-field class="full-width" fxFlex="30">
-                            <mat-label>Nome completo: </mat-label>
-                            <input matInput formControlName="nome" placeholder="Nome completo:">
+                            <mat-label>Nome Completo: </mat-label>
+                            <input matInput formControlName="nome" placeholder="Nome Completo:">
                             <mat-error *ngIf="formulario.controls.nome.errors && !formulario.controls.nome.pristine">
                                 <mat-error *ngIf="formulario.controls.nome.errors.required ">
                                     Campo nome é obrigatório.
@@ -84,7 +84,7 @@
 
                         <mat-form-field fxFlex="13">
                             <mat-label>RG:</mat-label>
-                            <input matInput formControlName="rg" placeholder="RG:">
+                            <input matInput formControlName="rg" placeholder="RG:" [textMask]="{mask: mascaraRg, guide: false}">
                         </mat-form-field>
 
                         <div fxFlex=10>
@@ -240,7 +240,7 @@
                         <button mat-stroked-button *ngIf="formulario.controls.id.value && !progress"
                             (click)="novoCliente($event)" style=" color: #28a745">
                             <mat-icon>add</mat-icon>
-                            Novo cliente
+                            Novo Cliente
                         </button>
 
                     </div>
@@ -269,7 +269,7 @@
 
                 <mat-form-field class="full-width">
                     <mat-label>Buscar Cliente</mat-label>
-                    <input matInput placeholder="buscar" (keyup)="applyFilter($event)">
+                    <input matInput placeholder="Buscar" (keyup)="applyFilter($event)">
                 </mat-form-field>
                 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 full-width">
 

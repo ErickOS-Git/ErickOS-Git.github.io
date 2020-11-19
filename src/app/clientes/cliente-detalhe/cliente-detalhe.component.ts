@@ -18,6 +18,7 @@ export class ClienteDetalheComponent implements OnInit {
   progress = false;
   mascaraData = MascaraUtil.mascaraNascimento;
   mascaraCpf = MascaraUtil.mascaraCpf;
+  mascaraRG = MascaraUtil.mascaraRg;
   mascaraCelular = MascaraUtil.mascaraCelular;
   mascaraTelefoneFixo = MascaraUtil.mascaraTelefoneFixo;
 

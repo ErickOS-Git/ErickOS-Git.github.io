@@ -33,7 +33,7 @@
                     <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px" *ngIf="formulario.controls.id.value">
 
                         <mat-form-field fxFlex="15">
-                            <mat-label>ID :</mat-label>
+                            <mat-label>ID:</mat-label>
                             <input matInput value="{{ fornecedorNovo.id }}" disabled>
                         </mat-form-field>
 
@@ -47,7 +47,7 @@
                     <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
 
                         <mat-form-field class="full-width" fxFlex="100">
-                            <mat-label>Razão social</mat-label>
+                            <mat-label>Razão Social:</mat-label>
                             <input matInput formControlName="razaoSocial">
                         </mat-form-field>
 
@@ -56,28 +56,28 @@
                     <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
 
                         <mat-form-field *ngIf="!formulario.controls.checked.value" fxFlex="20">
-                            <mat-label>CNPJ</mat-label>
+                            <mat-label>CNPJ:</mat-label>
                             <input matInput formControlName="cnpj" [textMask]="{mask: mascaraCnpj, guide: false}">
                         </mat-form-field>
 
                         <mat-form-field *ngIf="formulario.controls.checked.value" fxFlex="20">
-                            <mat-label>CPF</mat-label>
+                            <mat-label>CPF:</mat-label>
                             <input matInput formControlName="cpf" [textMask]="{mask: mascaraCpf, guide: false}">
                         </mat-form-field>
 
                         <mat-form-field fxFlex="20">
-                            <mat-label>Inscrição Estadual</mat-label>
+                            <mat-label>Inscrição Estadual:</mat-label>
                             <input matInput formControlName="inscricaoEstadual">
                         </mat-form-field>
 
                         <mat-form-field fxFlex="20">
-                            <mat-label>Inscrição Municiapal</mat-label>
+                            <mat-label>Inscrição Municipal:</mat-label>
                             <input matInput formControlName="inscricaoMunicipal">
                         </mat-form-field>
 
 
                         <mat-form-field fxFlex="15" color="primary">
-                            <mat-label>Data de abertura</mat-label>
+                            <mat-label>Data de abertura:</mat-label>
                             <input matInput type="date" formControlName="dataAbertura">
                         </mat-form-field>
 
@@ -88,12 +88,12 @@
 
 
                         <mat-form-field fxFlex="15">
-                            <mat-label>Celular :</mat-label>
+                            <mat-label>Celular:</mat-label>
                             <input matInput formControlName="celular" [textMask]="{mask: mascaraCelular, guide: false}" name="celular">
                         </mat-form-field>
 
                         <mat-form-field fxFlex="12">
-                            <mat-label>Telefone :</mat-label>
+                            <mat-label>Telefone:</mat-label>
                             <input matInput formControlName="telefone" [textMask]="{mask: mascaraTelefoneFixo, guide: false}" name="telefone">
                         </mat-form-field>
 
@@ -108,8 +108,8 @@
                         </mat-form-field>
 
                         <mat-form-field fxFlex="30">
-                            <mat-label>Site :</mat-label>
-                            <input matInput formControlName="site" placeholder="Site :">
+                            <mat-label>Site</mat-label>
+                            <input matInput formControlName="site" placeholder="Site">
                         </mat-form-field>
 
                     </div>
@@ -117,7 +117,7 @@
                     <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
                         <mat-card-subtitle fxFlex="100">
                             <ol class="breadcrumb mb-4">
-                                <li class="breadcrumb-item active"> Endereço </li>
+                                <li class="breadcrumb-item active"> Endereço: </li>
                             </ol>
                         </mat-card-subtitle>
                     </div>
@@ -125,21 +125,20 @@
                     <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
 
                         <mat-form-field fxFlex="12">
-                            <mat-label>CEP :</mat-label>
+                            <mat-label>CEP:</mat-label>
                             <input matInput formControlName="cep" placeholder="CEP:" (keyup)="buscarCep($event)">
                         </mat-form-field>
 
 
                         <mat-form-field fxFlex="45">
-                            <mat-label>Bairro :</mat-label>
-                            <input matInput formControlName="bairro" placeholder="Endereço:">
+                            <mat-label>Bairro:</mat-label>
+                            <input matInput formControlName="bairro" placeholder="Endereço">
                         </mat-form-field>
 
                         <mat-form-field fxFlex="45">
-                            <mat-label>Endereço :</mat-label>
-                            <input matInput formControlName="endereco" placeholder="Endereço:">
+                            <mat-label>Endereço:</mat-label>
+                            <input matInput formControlName="endereco" placeholder="Endereço">
                         </mat-form-field>
-
 
 
                     </div>
@@ -147,19 +146,19 @@
                     <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
 
                         <mat-form-field fxFlex="30">
-                            <mat-label>Cidade :</mat-label>
-                            <input matInput formControlName="cidade" placeholder="Cidade :">
+                            <mat-label>Cidade:</mat-label>
+                            <input matInput formControlName="cidade" placeholder="Cidade">
                         </mat-form-field>
 
                         <mat-form-field fxFlex="12">
-                            <mat-label>Estado :</mat-label>
-                            <input matInput formControlName="estado" placeholder="Estado :">
+                            <mat-label>Estado:</mat-label>
+                            <input matInput formControlName="estado" placeholder="Estado">
                         </mat-form-field>
 
 
                         <mat-form-field fxFlex="12">
-                            <mat-label>Nº :</mat-label>
-                            <input matInput formControlName="numero" placeholder="Complemento:">
+                            <mat-label>Nº:</mat-label>
+                            <input matInput formControlName="numero" placeholder="Complemento">
                         </mat-form-field>
 
                     </div>

@@ -94,7 +94,7 @@ export class ProdutoComponent implements OnInit {
       dataCadastro: [produtoForm.dataCadastro],
       nomeProduto: [produtoForm.nomeProduto, Validators.required],
       valorVenda: [produtoForm.valorVenda, Validators.required],
-      valorCompra: [produtoForm.valorCompra, Validators.required],
+      valorCompra: [produtoForm.valorCompra],
       categoriaProduto: [produtoForm.categoriaProduto, Validators.required],
       tipoProduto: [produtoForm.tipoProduto, Validators.required]
     });
@@ -201,7 +201,7 @@ export class ProdutoComponent implements OnInit {
 
   applyFilterProduto(event: Event) {
     this.filtroTable = (event.target as HTMLInputElement).value;
-    this.service.buscarProdutos(this.filtroTable, 0, 4)
+    this.service.buscarProdutos(this.filtroTable,0 , 10)
       .subscribe(response => {
         this.produtos = response.content;
         this.totalElementos = response.totalElements;

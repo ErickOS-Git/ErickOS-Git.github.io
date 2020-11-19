@@ -100,6 +100,7 @@ export class FornecedorComponent implements OnInit {
         this.fornecedorNovo = response;
         this.progress = false;
         this.service.msg('Salvo Com sucesso');
+        this.listarFornecedor();
       }, errorResponse => {
         this.errors = errorResponse.error.errors;
         console.log(errorResponse);

@@ -62,7 +62,7 @@
 
                 <mat-form-field fxFlex="14">
                     <mat-label>RG:</mat-label>
-                    <input matInput formControlName="rg" placeholder="RG:">
+                    <input matInput formControlName="rg" [textMask]="{mask: mascaraRG, guide: false}" placeholder="RG:">
                 </mat-form-field>
 
                 <div fxFlex=10>

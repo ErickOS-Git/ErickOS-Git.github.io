@@ -39,17 +39,17 @@
             <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
 
                 <mat-form-field class="full-width" fxFlex="40">
-                    <mat-label>Razão social</mat-label>
+                    <mat-label>Razão Social:</mat-label>
                     <input matInput formControlName="razaoSocial">
                 </mat-form-field>
 
                 <mat-form-field fxFlex="40">
-                    <mat-label>Nome Fantasia </mat-label>
+                    <mat-label>Nome Fantasia:</mat-label>
                     <input matInput formControlName="nomeFantasia">
                 </mat-form-field>
 
                 <mat-form-field fxFlex="20">
-                    <mat-label>CNPJ</mat-label>
+                    <mat-label>CNPJ:</mat-label>
                     <input matInput formControlName="cnpj" [textMask]="{mask: mascaraCnpj, guide: false}">
                 </mat-form-field>
 
@@ -58,28 +58,28 @@
             <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
 
                 <mat-form-field fxFlex="20">
-                    <mat-label>Inscrição Estadual</mat-label>
-                    <input matInput formControlName="inscricaoEstadual">
+                    <mat-label>Inscrição Estadual:</mat-label>
+                    <input matInput formControlName="inscricaoEstadual"  maxlength="20">
                 </mat-form-field>
 
                 <mat-form-field fxFlex="20">
-                    <mat-label>Inscrição Municiapal</mat-label>
-                    <input matInput formControlName="inscricaoMunicipal">
+                    <mat-label>Inscrição Municipal:</mat-label>
+                    <input matInput formControlName="inscricaoMunicipal" maxlength="20">
                 </mat-form-field>
 
                 <mat-form-field fxFlex="40">
-                    <mat-label>Área de Atuação</mat-label>
+                    <mat-label>Área de Atuação:</mat-label>
                     <input matInput formControlName="areaAtuacao">
                 </mat-form-field>
 
                 <mat-form-field fxFlex="10">
-                    <mat-label>Celular :</mat-label>
+                    <mat-label>Celular:</mat-label>
                     <input matInput formControlName="celular" [textMask]="{mask: mascaraCelular, guide: false}"
                         name="celular">
                 </mat-form-field>
 
                 <mat-form-field fxFlex="10">
-                    <mat-label>Telefone :</mat-label>
+                    <mat-label>Telefone:</mat-label>
                     <input matInput formControlName="telefone" [textMask]="{mask: mascaraTelefoneFixo, guide: false}"
                         name="telefone">
                 </mat-form-field>
@@ -88,18 +88,18 @@
             <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
 
                 <mat-form-field fxFlex="12">
-                    <mat-label>CEP :</mat-label>
-                    <input matInput formControlName="cep" placeholder="CEP:" (keyup)="buscarCep($event)">
+                    <mat-label>CEP:</mat-label>
+                    <input matInput formControlName="cep" placeholder="CEP:" (keyup)="buscarCep($event)" maxlength="9">
                 </mat-form-field>
 
 
                 <mat-form-field fxFlex="45">
-                    <mat-label>Bairro :</mat-label>
+                    <mat-label>Bairro:</mat-label>
                     <input matInput formControlName="bairro" placeholder="Endereço:">
                 </mat-form-field>
 
                 <mat-form-field fxFlex="45">
-                    <mat-label>Endereço :</mat-label>
+                    <mat-label>Endereço:</mat-label>
                     <input matInput formControlName="endereco" placeholder="Endereço:">
                 </mat-form-field>
 
@@ -110,18 +110,18 @@
             <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
 
                 <mat-form-field fxFlex="30">
-                    <mat-label>Cidade :</mat-label>
+                    <mat-label>Cidade:</mat-label>
                     <input matInput formControlName="cidade" placeholder="Cidade :">
                 </mat-form-field>
 
                 <mat-form-field fxFlex="12">
-                    <mat-label>Estado :</mat-label>
+                    <mat-label>Estado:</mat-label>
                     <input matInput formControlName="estado" placeholder="Estado :">
                 </mat-form-field>
 
 
                 <mat-form-field fxFlex="12">
-                    <mat-label>Nº :</mat-label>
+                    <mat-label>Nº:</mat-label>
                     <input matInput formControlName="numero" placeholder="Complemento:">
                 </mat-form-field>
 

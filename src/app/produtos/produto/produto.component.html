@@ -18,7 +18,7 @@
                     fxLayoutGap.lt-md="0px">
                     <mat-card-subtitle fxFlex="100">
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active"> Categoria </li>
+                            <li class="breadcrumb-item active"> Produto </li>
                         </ol>
                     </mat-card-subtitle>
                 </div>
@@ -114,7 +114,7 @@
                         <button mat-stroked-button *ngIf="formProduto.controls.id.value && !progress"
                             (click)="novoProduto($event)" style=" color: #28a745">
                             <mat-icon>add</mat-icon>
-                            Novo cliente
+                            Novo Produto
                         </button>
 
                     </div>
@@ -136,6 +136,15 @@
             <mat-card-title>{{ categoriaProdutoNovo.id ? "Atualizar" : "Cadastro" }}</mat-card-title> <br>
 
             <mat-divider></mat-divider> <br>
+
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
+                    <mat-card-subtitle fxFlex="100">
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active"> Categoria </li>
+                        </ol>
+                    </mat-card-subtitle>
+                </div>
 
             <mat-card-content>
 
@@ -274,6 +283,15 @@
             <mat-card-title>{{ tipoProdutoNovo.id ? "Atualizar" : "Cadastro" }}</mat-card-title> <br>
 
             <mat-divider></mat-divider> <br>
+
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
+                    <mat-card-subtitle fxFlex="100">
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active"> Tipo do Produto </li>
+                        </ol>
+                    </mat-card-subtitle>
+                </div>
 
             <mat-card-content>
 
