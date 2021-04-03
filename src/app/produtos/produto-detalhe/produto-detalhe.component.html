@@ -16,7 +16,8 @@
 
             <form fxLayout="column" [formGroup]="formProduto" (ngSubmit)="atualizarProdutos()">
 
-                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px" *ngIf="formProduto.controls.id.value">
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px"
+                    *ngIf="formProduto.controls.id.value">
                     <mat-form-field fxFlex="15">
                         <mat-label>ID :</mat-label>
                         <input matInput value="{{ produtoAtt.id }}" disabled>
@@ -27,7 +28,8 @@
                         <input matInput type="text" value="{{ produtoAtt.dataCadastro }}" disabled>
                     </mat-form-field>
                 </div>
-                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
 
                     <mat-form-field fxFlex="100">
                         <mat-label>Descrição</mat-label>
@@ -36,11 +38,13 @@
 
                 </div>
 
-                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
 
                     <mat-form-field fxFlex="50">
                         <mat-label>Categoria</mat-label>
-                        <mat-select placeholder="selecione a categoria" formControlName="categoriaProduto" [compareWith]="compararObj">
+                        <mat-select placeholder="selecione a categoria" formControlName="categoriaProduto"
+                            [compareWith]="compararObj">
                             <mat-option *ngFor="let categoria of listarCategoriaProdutos" [value]="categoria">
                                 {{ categoria.nomeCategoriaProduto }}
                             </mat-option>
@@ -49,7 +53,8 @@
 
                     <mat-form-field fxFlex="50">
                         <mat-label>Tipo</mat-label>
-                        <mat-select placeholder="selecione a tipo" formControlName="tipoProduto" [compareWith]="compararObj">
+                        <mat-select placeholder="selecione a tipo" formControlName="tipoProduto"
+                            [compareWith]="compararObj">
                             <mat-option *ngFor="let tipo of listaTipoProdutos" [value]="tipo">
                                 {{ tipo.nomeTipoProduto }}
                             </mat-option>
@@ -58,7 +63,8 @@
 
                 </div>
 
-                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
 
                     <mat-form-field>
                         <mat-label>Preço de compra</mat-label>
@@ -78,13 +84,14 @@
                 <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="50px" fxLayoutGap.lt-md="0px">
 
                     <mat-spinner [diameter]="30" *ngIf="progress"> </mat-spinner>
-                    <button mat-stroked-button [disabled]="formProduto.invalid" type="submit" *ngIf="!progress" color="primary"> 
-                         <mat-icon>save</mat-icon>                              
-                         Atualizar
+                    <button mat-stroked-button [disabled]="formProduto.invalid" type="submit" *ngIf="!progress"
+                        color="primary">
+                        <mat-icon>save</mat-icon>
+                        Atualizar
                     </button>
 
-                    <button mat-stroked-button *ngIf="!progress"  (click)="fechar($event)" color="warn"> 
-                        <mat-icon>delete</mat-icon>                              
+                    <button mat-stroked-button *ngIf="!progress" (click)="fechar($event)" color="warn">
+                        <mat-icon>delete</mat-icon>
                         Cancelar
                     </button>
 
@@ -113,7 +120,8 @@
 
             <form fxLayout="column" [formGroup]="formCategoriaProduto" (ngSubmit)="atualizarCategoriaProduto()">
 
-                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px" *ngIf="formProduto.controls.id.value">
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px"
+                    *ngIf="formProduto.controls.id.value">
                     <mat-form-field fxFlex="15">
                         <mat-label>ID :</mat-label>
                         <input matInput value="{{ categoriaProdutoAtt.id }}" disabled>
@@ -124,7 +132,8 @@
                         <input matInput type="text" value="{{ categoriaProdutoAtt.dataCadastro }}" disabled>
                     </mat-form-field>
                 </div>
-                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
 
                     <mat-form-field fxFlex="100">
                         <mat-label>Descrição</mat-label>
@@ -132,18 +141,60 @@
                     </mat-form-field>
 
                 </div>
-                
+                <div formArrayName="adicionais">
+                    <div>
+                        <button mat-raised-button (click)="addAdicional($event)"
+                            style="background-color: #28a745; color: white;" fxFlex="10">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+                    <br>
+                    <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
+                    <div *ngFor="let produto of formCategoriaProduto.controls.adicionais['controls']; let i = index"
+                        [formGroupName]="i" class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="100px"
+                        fxLayoutGap.lt-md="100px">
+
+                        <div>
+                            <mat-form-field>
+                                    <mat-label>Adicionais</mat-label>
+                                    <mat-select formControlName="id">
+                                        <mat-option *ngFor="let adicional of carregaAdicionais" [value]="adicional.id">
+                                            {{adicional.nome}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+
+                            <button mat-icon-button  *ngIf="!formCategoriaProduto.controls.id.value"
+                                (click)="removerCategoriaAdiconal(i)" color="warn">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+
+                            <button mat-icon-button *ngIf="formCategoriaProduto.controls.id.value"
+                                    (click)="apagarCategoriaAdicional($event,i)" color="warn">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+
+                        </div>
+
+                    </div>
+
+                    </div>
+
+                </div>
 
                 <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="50px" fxLayoutGap.lt-md="0px">
 
                     <mat-spinner [diameter]="30" *ngIf="progress"> </mat-spinner>
-                    <button mat-stroked-button [disabled]="formCategoriaProduto.invalid" type="submit" *ngIf="!progress" color="primary"> 
-                         <mat-icon>save</mat-icon>                              
-                         Atualizar
+                    <button mat-stroked-button [disabled]="formCategoriaProduto.invalid" type="submit" *ngIf="!progress"
+                        color="primary">
+                        <mat-icon>save</mat-icon>
+                        Atualizar
                     </button>
 
-                    <button mat-stroked-button *ngIf="!progress"  (click)="fechar($event)" color="warn"> 
-                        <mat-icon>delete</mat-icon>                              
+                    <button mat-stroked-button *ngIf="!progress" (click)="fechar($event)" color="warn">
+                        <mat-icon>delete</mat-icon>
                         Cancelar
                     </button>
 
@@ -172,7 +223,8 @@
 
             <form fxLayout="column" [formGroup]="formTipoProduto" (ngSubmit)="atualizarTipoProduto()">
 
-                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px" *ngIf="formProduto.controls.id.value">
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px"
+                    *ngIf="formProduto.controls.id.value">
                     <mat-form-field fxFlex="15">
                         <mat-label>ID :</mat-label>
                         <input matInput value="{{ tipoProdutoAtt.id }}" disabled>
@@ -183,7 +235,8 @@
                         <input matInput type="text" value="{{ tipoProdutoAtt.dataCadastro }}" disabled>
                     </mat-form-field>
                 </div>
-                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
 
                     <mat-form-field fxFlex="100">
                         <mat-label>Descrição</mat-label>
@@ -191,18 +244,81 @@
                     </mat-form-field>
 
                 </div>
-                
+
 
                 <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="50px" fxLayoutGap.lt-md="0px">
 
                     <mat-spinner [diameter]="30" *ngIf="progress"> </mat-spinner>
-                    <button mat-stroked-button [disabled]="formTipoProduto.invalid" type="submit" *ngIf="!progress" color="primary"> 
-                         <mat-icon>save</mat-icon>                              
-                         Atualizar
+                    <button mat-stroked-button [disabled]="formTipoProduto.invalid" type="submit" *ngIf="!progress"
+                        color="primary">
+                        <mat-icon>save</mat-icon>
+                        Atualizar
                     </button>
 
-                    <button mat-stroked-button *ngIf="!progress"  (click)="fechar($event)" color="warn"> 
-                        <mat-icon>delete</mat-icon>                              
+                    <button mat-stroked-button *ngIf="!progress" (click)="fechar($event)" color="warn">
+                        <mat-icon>delete</mat-icon>
+                        Cancelar
+                    </button>
+
+                </div>
+
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<div *ngIf="adicional.nome">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Atualizar Adicional</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+                <mat-card-subtitle fxFlex="100">
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item active"> Adicional </li>
+                    </ol>
+                </mat-card-subtitle>
+            </div>
+
+            <form fxLayout="column" [formGroup]="formAdicional" (ngSubmit)="atualizarAdicional()">
+
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px"
+                    *ngIf="formProduto.controls.id.value">
+                    <mat-form-field fxFlex="15">
+                        <mat-label>ID :</mat-label>
+                        <input matInput value="{{ adicionalAtt.id }}" disabled>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Data de Cadastro</mat-label>
+                        <input matInput type="text" value="{{ adicionalAtt.dataCadastro }}" disabled>
+                    </mat-form-field>
+                </div>
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
+
+                    <mat-form-field fxFlex="100">
+                        <mat-label>Descrição</mat-label>
+                        <input matInput formControlName="nome" placeholder="Descrição">
+                    </mat-form-field>
+
+                </div>
+
+
+                <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="50px" fxLayoutGap.lt-md="0px">
+
+                    <mat-spinner [diameter]="30" *ngIf="progress"> </mat-spinner>
+                    <button mat-stroked-button [disabled]="formAdicional.invalid" type="submit" *ngIf="!progress"
+                        color="primary">
+                        <mat-icon>save</mat-icon>
+                        Atualizar
+                    </button>
+
+                    <button mat-stroked-button *ngIf="!progress" (click)="fechar($event)" color="warn">
+                        <mat-icon>cancel</mat-icon>
                         Cancelar
                     </button>
 

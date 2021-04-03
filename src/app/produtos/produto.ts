@@ -1,3 +1,5 @@
+import { Cliente } from '../clientes/cliente';
+import { Adicional } from './adicional';
 import { CategoriaProduto } from './categoria-produto';
 import { TipoProduto } from './tipo-produto';
 
@@ -7,7 +9,10 @@ export class Produto {
     dataCadastro: string;
     nomeProduto: string;
     valorVenda: string;
-    valorCompra: string;
+    valorCompra: string;  
     categoriaProduto: CategoriaProduto;
     tipoProduto: TipoProduto;
+    cliente: Cliente;
+    
+
 }

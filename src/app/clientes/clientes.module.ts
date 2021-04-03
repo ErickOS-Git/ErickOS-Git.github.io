@@ -6,7 +6,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
-import { TextMaskModule } from 'angular2-text-mask';
+import { NgxMaskModule } from 'ngx-mask'
 
 import { ClienteDeleteComponent } from './cliente-delete/cliente-delete.component';
 import { ClienteDetalheComponent } from './cliente-detalhe/cliente-detalhe.component';
@@ -61,7 +61,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     ReactiveFormsModule,
     FlexLayoutModule,
     MatProgressSpinnerModule,
-    TextMaskModule,
+    NgxMaskModule.forRoot(),
     MatPaginatorModule,
     
   ],

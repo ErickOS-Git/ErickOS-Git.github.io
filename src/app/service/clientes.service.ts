@@ -57,12 +57,16 @@ export class ClientesService {
 
   }
 
+  carregarClientes(): Observable<Cliente[]> {
+    return this.http.get<Cliente[]>(`${this.apiBaseUrl}/carregar-cliente`);
+  }
+
   buscarCliente(filtro: string, page, size): Observable<PaginarComponents> {
     const params = new HttpParams()
       .set('filtro', filtro)
       .set('page', page)
       .set('size', size);
-    return this.http.get<any>(`${this.apiBaseUrl}/buscarCliente?${params.toString()}`);
+    return this.http.get<any>(`${this.apiBaseUrl}/buscar-cliente?${params.toString()}`);
   }
 
 

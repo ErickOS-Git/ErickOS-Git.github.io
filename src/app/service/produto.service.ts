@@ -7,15 +7,14 @@ import { Observable } from 'rxjs';
 import { CategoriaProduto } from '../produtos/categoria-produto';
 import { TipoProduto } from '../produtos/tipo-produto';
 import { PaginarComponents } from '../util/paginarComponents';
+import { Adicional } from '../produtos/adicional';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProdutoService {
 
-  apiBaseUrlprod: string = environment.apiBaseUrl + '/api/produtos';
-  apiBaseURlcat: string = environment.apiBaseUrl + '/api/produtos/categoria-produto';
-  apiBaseURlTipo: string = environment.apiBaseUrl + '/api/produtos/tipo-produto';
+  apiBaseUrlprod: string = environment.apiBaseUrl + '/api/produtos';  
 
   constructor(
     private snack: MatSnackBar,
@@ -44,12 +43,16 @@ export class ProdutoService {
     return this.http.get<any>(`${this.apiBaseUrlprod}?${params.toString()}`);
   }
 
+  carregarProdutos(): Observable<Produto[]>{
+    return this.http.get<Produto[]>(`${this.apiBaseUrlprod}/carregar-produtos`);
+  }
+
   buscarProdutos(filtro: string, page, size): Observable<PaginarComponents> {
     const params = new HttpParams()
       .set('filtro', filtro)
       .set('page', page)
       .set('size', size);
-    return this.http.get<any>(`${this.apiBaseUrlprod}?${params.toString()}`);
+    return this.http.get<any>(`${this.apiBaseUrlprod}/buscar-produto?${params.toString()}`);
   }
 
   atualizarProduto(produto: Produto): Observable<Produto> {
@@ -60,71 +63,6 @@ export class ProdutoService {
     return this.http.delete<any>(`${this.apiBaseUrlprod}/${produto.id}`);
   }
 
-  /*------------------------URLS CATEGORIA PRODUTOS---------------------------------------*/
-
-
-  salvarCategoriaProduto(categoria: CategoriaProduto): Observable<CategoriaProduto> {
-    return this.http.post<CategoriaProduto>(this.apiBaseURlcat, categoria);
-  }
-
-  atualizarCategoriaProduto(categoria: CategoriaProduto): Observable<CategoriaProduto> {
-    return this.http.put<any>(`${this.apiBaseURlcat}/${categoria.id}`, categoria);
-  }
-
-  deleteCategoriaProduto(categoria: CategoriaProduto): Observable<any> {
-    return this.http.delete<any>(`${this.apiBaseURlcat}/${categoria.id}`);
-  }
-  carregarCategoriasProdutos(): Observable<CategoriaProduto[]> {
-    return this.http.get<CategoriaProduto[]>(this.apiBaseURlcat);
-  }
-
-  getAllCategoriaProdutos(page, size): Observable<PaginarComponents> {
-    const params = new HttpParams()
-      .set('page', page)
-      .set('size', size);
-    return this.http.get<any>(`${this.apiBaseURlcat}/list?${params.toString()}`);
-  }
-
-  buscarCategoriaProdutos(filtro: string, page, size): Observable<PaginarComponents> {
-    const params = new HttpParams()
-      .set('filtro', filtro)
-      .set('page', page)
-      .set('size', size);
-    return this.http.get<any>(`${this.apiBaseURlcat}/buscar?${params.toString()}`);
-  }
-
-  /*------------------------------URLS TIPOS DE PRODUTOS------------------------------------*/
-
-
-  salvarTipoProduto(tipo: TipoProduto): Observable<TipoProduto> {
-    return this.http.post<TipoProduto>(this.apiBaseURlTipo, tipo);
-  }
-
-  atualizarTipoProduto(tipoProduto: TipoProduto): Observable<CategoriaProduto> {
-    return this.http.put<any>(`${this.apiBaseURlTipo}/${tipoProduto.id}`, tipoProduto);
-  }
-
-  deleteTipoProduto(tipoProduto: TipoProduto): Observable<any> {
-    return this.http.delete<any>(`${this.apiBaseURlTipo}/${tipoProduto.id}`);
-  }
-
-  carregarTipoProdutos(): Observable<TipoProduto[]> {
-    return this.http.get<TipoProduto[]>(this.apiBaseURlTipo);
-  }
-
-  getAllTipoProdutos(page, size): Observable<PaginarComponents> {
-    const params = new HttpParams()
-      .set('page', page)
-      .set('size', size);
-    return this.http.get<any>(`${this.apiBaseURlTipo}/list?${params.toString()}`);
-  }
-
-  buscarTipoProdutos(filtro: string, page, size): Observable<PaginarComponents> {
-    const params = new HttpParams()
-      .set('filtro', filtro)
-      .set('page', page)
-      .set('size', size);
-    return this.http.get<any>(`${this.apiBaseURlTipo}/buscar?${params.toString()}`);
-  }
+  
 
 }

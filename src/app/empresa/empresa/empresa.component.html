@@ -50,7 +50,7 @@
 
                 <mat-form-field fxFlex="20">
                     <mat-label>CNPJ:</mat-label>
-                    <input matInput formControlName="cnpj" [textMask]="{mask: mascaraCnpj, guide: false}">
+                    <input matInput formControlName="cnpj" mask="000000000000000">
                 </mat-form-field>
 
             </div>
@@ -74,13 +74,13 @@
 
                 <mat-form-field fxFlex="10">
                     <mat-label>Celular:</mat-label>
-                    <input matInput formControlName="celular" [textMask]="{mask: mascaraCelular, guide: false}"
+                    <input matInput formControlName="celular" mask="(00) 0 0000-0000"
                         name="celular">
                 </mat-form-field>
 
                 <mat-form-field fxFlex="10">
                     <mat-label>Telefone:</mat-label>
-                    <input matInput formControlName="telefone" [textMask]="{mask: mascaraTelefoneFixo, guide: false}"
+                    <input matInput formControlName="telefone" mask="(00) 0000-0000"
                         name="telefone">
                 </mat-form-field>
 

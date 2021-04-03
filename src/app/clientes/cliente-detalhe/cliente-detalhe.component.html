@@ -23,7 +23,7 @@
 
                 <mat-form-field fxFlex="15">
                     <mat-label>Data de Cadastro:</mat-label>
-                    <input matInput [textMask]="{mask: mascaraData, guide: false}" value="{{ clienteAtualizado.dataCadastro }}" disabled>
+                    <input matInput   value="{{ clienteAtualizado.dataCadastro }}" disabled>
                 </mat-form-field>
 
             </div>
@@ -52,7 +52,7 @@
 
                 <mat-form-field fxFlex="14">
                     <mat-label>CPF:</mat-label>
-                    <input matInput formControlName="cpf" [textMask]="{mask: mascaraCpf, guide: false}" placeholder="CPF:">
+                    <input matInput formControlName="cpf" mask="000.000.000-00" placeholder="CPF:">
                     <mat-error *ngIf="formulario.controls.cpf.errors && !formulario.controls.cpf.pristine">
                         <mat-error *ngIf="formulario.controls.cpf.errors.required ">
                             Campo cpf é obrigatório.
@@ -62,7 +62,7 @@
 
                 <mat-form-field fxFlex="14">
                     <mat-label>RG:</mat-label>
-                    <input matInput formControlName="rg" [textMask]="{mask: mascaraRG, guide: false}" placeholder="RG:">
+                    <input matInput formControlName="rg" mask="00.000.000-00" placeholder="RG:">
                 </mat-form-field>
 
                 <div fxFlex=10>
@@ -86,12 +86,12 @@
 
                 <mat-form-field fxFlex="15">
                     <mat-label>Celular:</mat-label>
-                    <input matInput formControlName="celular" [textMask]="{mask: mascaraCelular, guide: false}" name="celular">
+                    <input matInput formControlName="celular"  mask="(00) 0 0000-0000" name="celular">
                 </mat-form-field>
 
                 <mat-form-field fxFlex="15">
                     <mat-label>Telefone:</mat-label>
-                    <input matInput formControlName="telefone" [textMask]="{mask: mascaraTelefoneFixo, guide: false}" name="telefone">
+                    <input matInput formControlName="telefone" mask="(00) 0000-0000" name="telefone">
                 </mat-form-field>
 
             </div>

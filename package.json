@@ -25,6 +25,8 @@
     "@auth0/angular-jwt": "^5.0.2",
     "bootstrap": "^4.3.1",
     "jquery": "^3.5.1",
+    "ngx-mask": "^11.1.4",
+    "ngx-mat-select-search": "^3.1.4",
     "rxjs": "~6.5.4",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
@@ -48,5 +50,20 @@
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
     "typescript": "~3.9.7"
-  }
+  },
+  "description": "This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.5.",
+  "main": "karma.conf.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ErickOS-Git/ErickOS-Git.github.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ErickOS-Git/ErickOS-Git.github.io/issues"
+  },
+  "homepage": "https://github.com/ErickOS-Git/ErickOS-Git.github.io#readme"
 }

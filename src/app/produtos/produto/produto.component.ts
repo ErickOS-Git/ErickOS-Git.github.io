@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, ɵConsole } from '@angular/core';
 import { ProdutoService } from 'src/app/service/produto.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Produto } from '../produto';
 import { CategoriaProduto } from '../categoria-produto';
@@ -9,6 +9,12 @@ import { ProdutoDeleteComponent } from '../produto-delete/produto-delete.compone
 import { MatTableDataSource } from '@angular/material/table';
 import { PageEvent } from '@angular/material/paginator';
 import { ProdutoDetalheComponent } from '../produto-detalhe/produto-detalhe.component';
+import { Adicional } from '../adicional';
+import { CategoriaAdicionalList } from '../categoria-adicional-list';
+import { CategoriaProdutoService } from 'src/app/service/categoria-produto.service';
+import { TipoProdutoService } from 'src/app/service/tipo-produto.service';
+import { AdicionalService } from 'src/app/service/adicional.service';
+import { CategoraAdicionalService } from 'src/app/service/categora-adicional.service';
 
 
 
@@ -17,22 +23,26 @@ import { ProdutoDetalheComponent } from '../produto-detalhe/produto-detalhe.comp
   templateUrl: './produto.component.html',
   styleUrls: ['./produto.component.css']
 })
-export class ProdutoComponent implements OnInit {  
+export class ProdutoComponent implements OnInit {
   // Variaveis para cadastro 
   produtoNovo: Produto;
   categoriaProdutoNovo: CategoriaProduto;
   tipoProdutoNovo: TipoProduto;
+  adicionalNovo: Adicional;
   // carregamentos
   carregaCategoriaProdutos: CategoriaProduto[] = [];
   carregaTipoProdutos: TipoProduto[] = [];
-  produtos: Produto[] = [];
-  categorias: CategoriaProduto[] =[]
-  tipos: TipoProduto[] =[]
+  carregaAdicionais: Adicional[] = [];
+  produtos: Produto[];
+  categorias: CategoriaProduto[] = []
+  tipos: TipoProduto[] = [];
+  adicionais: Adicional[] = []; 
 
   // Formularios
   formProduto: FormGroup;
   formCategoriaProduto: FormGroup;
   formTipoProduto: FormGroup;
+  formAdicional: FormGroup;
   errors: string;
   progress = false;
 
@@ -55,40 +65,58 @@ export class ProdutoComponent implements OnInit {
   pageSizeOptionsTipo: number[] = [2, 4, 6, 10];
   filtroTableTipo;
 
+  totalElementosAdicionais = 0;
+  paginaAdicional = 0;
+  tamanhoAdicional = 4;
+  pageSizeOptionsAdicional: number[] = [2, 4, 6, 10];
+  filtroTableAdicional;
+
   //Montar a tabelas
   dataSourceProduto = new MatTableDataSource<Produto>();
   dataSourceCategoriaProduto = new MatTableDataSource<CategoriaProduto>();
   dataSourceTipoProduto = new MatTableDataSource<TipoProduto>();
+  dataSourceAdicional = new MatTableDataSource<Adicional>();
   colunasProduto = ['id', 'produto', 'categoria', 'tipo', 'dataCadastro', 'detalhes', 'apagar'];
   colunasCategoria = ['id', 'categoria', 'dataCadastro', 'detalhes', 'apagar'];
   colunasTipo = ['id', 'tipo', 'dataCadastro', 'detalhes', 'apagar'];
+  colunasAdicional = ['id', 'adicional', 'dataCadastro', 'detalhes', 'apagar'];
 
 
   constructor(
     private service: ProdutoService,
+    private catProdService: CategoriaProdutoService,
+    private tipoProdService: TipoProdutoService,
+    private adicionalService: AdicionalService,
+    private cateAdicionalService: CategoraAdicionalService,
     private fb: FormBuilder,
     private dialog: MatDialog,
   ) {
     this.produtoNovo = new Produto();
     this.categoriaProdutoNovo = new CategoriaProduto();
     this.tipoProdutoNovo = new TipoProduto();
+    this.adicionalNovo = new Adicional();
   }
 
   ngOnInit(): void {
-    this.montarFormulario(this.produtoNovo, this.categoriaProdutoNovo, this.tipoProdutoNovo);
+    this.montarFormulario(this.produtoNovo, this.categoriaProdutoNovo, this.tipoProdutoNovo, this.adicionalNovo);
     this.listarProdutos(this.pagina, this.tamanho);
     this.listarCategoriaProduto(this.paginaCategoria, this.tamanhoCategoria);
     this.listarTipoProduto(this.paginaTipo, this.tamanhoTipo);
+    this.listarAdicional(this.paginaAdicional, this.tamanhoAdicional);
     this.carregarCategoriaProdutos();
     this.carregarTipoProdutos();
+    this.carregarAdicionais();
+
   }
 
   // FORMULARIOS DE PRODUTO, CATEGORIA E TIPO PRODUTO
   montarFormulario(
     produtoForm: Produto,
     categoriaProdutoForm: CategoriaProduto,
-    tipoProdutoform: TipoProduto
+    tipoProdutoform: TipoProduto,
+    adicional: Adicional
   ) {
+    
     this.formProduto = this.fb.group({
       id: [produtoForm.id],
       dataCadastro: [produtoForm.dataCadastro],
@@ -96,13 +124,25 @@ export class ProdutoComponent implements OnInit {
       valorVenda: [produtoForm.valorVenda, Validators.required],
       valorCompra: [produtoForm.valorCompra],
       categoriaProduto: [produtoForm.categoriaProduto, Validators.required],
-      tipoProduto: [produtoForm.tipoProduto, Validators.required]
+      tipoProduto: [produtoForm.tipoProduto, Validators.required],
+      adicionais: this.fb.array([
+        this.fb.group({
+          adicional: []
+        })
+      ])
     });
 
     this.formCategoriaProduto = this.fb.group({
       id: [categoriaProdutoForm.id],
       dataCadastro: [categoriaProdutoForm.dataCadastro],
-      nomeCategoriaProduto: [categoriaProdutoForm.nomeCategoriaProduto, Validators.required]
+      nomeCategoriaProduto: [categoriaProdutoForm.nomeCategoriaProduto, Validators.required],
+      adicionais: this.fb.array([
+        this.fb.group({
+          idCatProAd: [],
+          id: [],
+          nome: []
+        })
+      ])
     });
 
     this.formTipoProduto = this.fb.group({
@@ -110,6 +150,12 @@ export class ProdutoComponent implements OnInit {
       dataCadastro: [tipoProdutoform.dataCadastro],
       nomeTipoProduto: [tipoProdutoform.nomeTipoProduto, Validators.required]
     });
+
+    this.formAdicional = this.fb.group({
+      id: [adicional.id],
+      nome: [adicional.nome],
+      dataCadastro: [adicional.dataCadastro]
+    })
   }
 
   //------------------------------------------------------- FUNÇÕES FORMULARIO PRODUTOS
@@ -173,13 +219,13 @@ export class ProdutoComponent implements OnInit {
       data: produto
     }).afterClosed().subscribe(response => {
       if (response) {
-        
+
         this.service.deleteProduto(produto)
           .subscribe(responseDelete => {
             this.service.msg('Produto deletado!');
             if (!this.filtroTable) {
               this.listarProdutos(this.pagina, this.tamanho);
-            
+
             } else {
               this.service.buscarProdutos(this.filtroTable, this.pagina, this.tamanho)
                 .subscribe(responseFilter => {
@@ -187,13 +233,13 @@ export class ProdutoComponent implements OnInit {
                   this.totalElementos = responseFilter.totalElements;
                   this.pagina = responseFilter.number;
                   this.dataSourceProduto.data = this.produtos;
-                
+
                 });
             }
-      
+
           }, errorResponse => {
-            this.service.msg('Ocorreu um erro ao deletar o cliente', true)
-              
+            this.service.msg('Ocorreu um erro ao deletar o produto', true)
+
           });
       }
     });
@@ -201,7 +247,7 @@ export class ProdutoComponent implements OnInit {
 
   applyFilterProduto(event: Event) {
     this.filtroTable = (event.target as HTMLInputElement).value;
-    this.service.buscarProdutos(this.filtroTable,0 , 10)
+    this.service.buscarProdutos(this.filtroTable, 0, 4)
       .subscribe(response => {
         this.produtos = response.content;
         this.totalElementos = response.totalElements;
@@ -217,7 +263,7 @@ export class ProdutoComponent implements OnInit {
 
   listarProdutos(pagina = 0, tamanho = 4) {
     this.service.getAllProdutos(pagina, tamanho)
-      .subscribe(response => {        
+      .subscribe(response => {
         this.produtos = response.content;
         this.totalElementos = response.totalElements;
         this.pagina = response.number;
@@ -225,6 +271,7 @@ export class ProdutoComponent implements OnInit {
       }, errorResponse => {
         this.errors = errorResponse.error.errors;
         console.log(errorResponse);
+        console.log(this.errors);
         this.service.msg('Não foi possível Carregar os produtos', true);
       });
   }
@@ -234,7 +281,7 @@ export class ProdutoComponent implements OnInit {
       height: '500px',
       width: '850px',
       data: produto
-      
+
     }).afterClosed().subscribe(response => {
       if (!this.filtroTable) {
         this.listarProdutos(this.pagina, this.tamanho);
@@ -257,12 +304,16 @@ export class ProdutoComponent implements OnInit {
   }
 
   // ------------------------------------------------------- FUNÇÕES FORMULARIO Categoria
-  submitCategoriaProduto() {    
+  submitCategoriaProduto() {
     this.progress = true;
-    this.service.salvarCategoriaProduto(this.formCategoriaProduto.value)
-      .subscribe(response => {        
+    console.log(this.formCategoriaProduto.value)
+    this.progress = false;
+    this.catProdService.salvarCategoriaProduto(this.formCategoriaProduto.value)
+      .subscribe(response => {
+        console.log(response);
         this.formCategoriaProduto.setValue(response);
         this.categoriaProdutoNovo = response;
+        console.log(this.formCategoriaProduto.value);
         this.service.msg('Categoria Salvo!');
         this.carregarCategoriaProdutos();
         this.listarCategoriaProduto(this.paginaCategoria, this.tamanhoCategoria);
@@ -275,12 +326,44 @@ export class ProdutoComponent implements OnInit {
       });
   }
 
+  get categoriaControls() {
+    return this.formCategoriaProduto.get('adicionais') as FormArray;
+  }
+
+  addAdicional(event: Event) {
+    event.preventDefault();
+    const adiconalLength = this.categoriaControls.length;
+    const novo = this.fb.group({
+      idCatProAd: [],
+      id: [],
+      nome: []
+    })
+
+    this.categoriaControls.push(novo);
+  }
+
+  removerCategoriaAdiconal(index) {
+    this.categoriaControls.removeAt(index);
+  }
+
+  apagarCategoriaAdicional(event: Event, index) {
+    event.preventDefault();
+    const idCatAdicional = (<FormArray>this.formCategoriaProduto.controls['adicionais']).at(index).value.idCatProAd;
+    this.cateAdicionalService.deletarCategoriaAdicional(idCatAdicional)
+      .subscribe(responseDelete => {
+        this.categoriaControls.removeAt(index);
+        this.cateAdicionalService.msg("Adicional deletado")
+      }, errorDeletar => {
+        this.errors = errorDeletar.erro.errors;
+        this.cateAdicionalService.msg(this.errors, true);
+      }) 
+  }
+
+
   carregarCategoriaProdutos() {
-    this.service.carregarCategoriasProdutos()
-      .subscribe(response => {  
-        console.log(response);      
+    this.catProdService.carregarCategoriasProdutos()
+      .subscribe(response => {
         this.carregaCategoriaProdutos = response;
-        console.log(this.carregaCategoriaProdutos);
       }, errorResponse => {
         this.errors = errorResponse.error.errors;
         console.log(errorResponse);
@@ -289,16 +372,17 @@ export class ProdutoComponent implements OnInit {
   }
 
   listarCategoriaProduto(pagina = 0, tamanho = 4) {
-    this.service.getAllCategoriaProdutos(pagina, tamanho)
+    this.catProdService.getAllCategoriaProdutos(pagina, tamanho)
       .subscribe(response => {
         this.categorias = response.content;
+        this.carregaCategoriaProdutos = response.content;
         this.totalElementosCategoria = response.totalElements;
         this.paginaCategoria = response.number;
-        this.dataSourceCategoriaProduto.data = this.categorias;
+        this.dataSourceCategoriaProduto.data = this.carregaCategoriaProdutos;
       }, errorResponse => {
         this.errors = errorResponse.error.errors;
         console.log(errorResponse);
-        this.service.msg('Não foi possível Carregar categorias', true);
+        this.catProdService.msg('Não foi possível Carregar Lista categorias', true);
       });
   }
 
@@ -309,7 +393,7 @@ export class ProdutoComponent implements OnInit {
     }).afterClosed().subscribe(responseClose => {
       if (responseClose) {
         this.progress = true;
-        this.service.deleteCategoriaProduto(this.formCategoriaProduto.value)
+        this.catProdService.deleteCategoriaProduto(this.formCategoriaProduto.value)
           .subscribe(responseDelete => {
             this.service.msg('Categoria deletado!');
             this.categoriaProdutoNovo = new CategoriaProduto();
@@ -332,27 +416,28 @@ export class ProdutoComponent implements OnInit {
       data: categoria
     }).afterClosed().subscribe(response => {
       if (response) {
-        
-        this.service.deleteCategoriaProduto(categoria)
+
+        this.catProdService.deleteCategoriaProduto(categoria)
           .subscribe(responseDelete => {
             this.service.msg('Categoria deletado!');
             if (!this.filtroTableCategoria) {
               this.listarCategoriaProduto(this.paginaCategoria, this.tamanhoCategoria);
-             
+
             } else {
-              this.service.buscarCategoriaProdutos(this.filtroTableCategoria, this.paginaCategoria, this.tamanhoCategoria)
+              this.catProdService.buscarCategoriaProdutos(this.filtroTableCategoria, this.paginaCategoria, this.tamanhoCategoria)
                 .subscribe(responseFilter => {
                   this.categorias = responseFilter.content;
+                  this.carregaCategoriaProdutos = responseFilter.content
                   this.totalElementosCategoria = responseFilter.totalElements;
                   this.paginaCategoria = responseFilter.number;
-                  this.dataSourceCategoriaProduto.data = this.categorias;
-                 
+                  this.dataSourceCategoriaProduto.data = this.carregaCategoriaProdutos;
+
                 });
             }
-           
+
           }, errorResponse => {
             this.service.msg('Ocorreu um erro ao deletar a Categoria', true)
-              
+
           });
       }
     });
@@ -361,11 +446,18 @@ export class ProdutoComponent implements OnInit {
   atualizarCategoriaProduto(event: Event) {
     event.preventDefault();
     this.progress = true;
-    this.service.atualizarCategoriaProduto(this.formCategoriaProduto.value)
+    console.log(this.formCategoriaProduto.value);
+    this.catProdService.atualizarCategoriaProduto(this.formCategoriaProduto.value)
       .subscribe(response => {
         this.service.msg('Categoria Atualizado!');
         this.carregarCategoriaProdutos();
         this.listarCategoriaProduto(this.paginaCategoria, this.tamanhoCategoria)
+        this.catProdService.getCateId(this.formCategoriaProduto.controls.id.value).subscribe(
+          response => {
+            this.formCategoriaProduto.setValue(response);
+            this.categoriaProdutoNovo = response;
+          }
+        )
         this.progress = false;
       }, errorResponse => {
         this.progress = false;
@@ -375,19 +467,18 @@ export class ProdutoComponent implements OnInit {
   }
 
   detalhesCategoriaproduto(categoria: CategoriaProduto) {
-    this.dialog.open(ProdutoDetalheComponent, {      
+    this.dialog.open(ProdutoDetalheComponent, {
       data: categoria
-      
     }).afterClosed().subscribe(response => {
       if (!this.filtroTableCategoria) {
         this.listarCategoriaProduto(this.pagina, this.tamanho);
       } else {
-        this.service.buscarCategoriaProdutos(this.filtroTableCategoria, this.paginaCategoria, this.tamanhoCategoria)
+        this.catProdService.buscarCategoriaProdutos(this.filtroTableCategoria, this.paginaCategoria, this.tamanhoCategoria)
           .subscribe(responseAt => {
-            this.categorias = responseAt.content;
+            this.carregaCategoriaProdutos = responseAt.content;
             this.totalElementosCategoria = responseAt.totalElements;
             this.paginaCategoria = responseAt.number;
-            this.dataSourceCategoriaProduto.data = this.categorias;
+            this.dataSourceCategoriaProduto.data = this.carregaCategoriaProdutos;
           });
       }
     });
@@ -401,12 +492,12 @@ export class ProdutoComponent implements OnInit {
 
   applyFilterCategoria(event: Event) {
     this.filtroTableCategoria = (event.target as HTMLInputElement).value;
-    this.service.buscarCategoriaProdutos(this.filtroTableCategoria, 0, 4)
+    this.catProdService.buscarCategoriaProdutos(this.filtroTableCategoria, 0, 4)
       .subscribe(response => {
         this.categorias = response.content;
         this.totalElementosCategoria = response.totalElements;
         this.paginaCategoria = response.number;
-        this.dataSourceCategoriaProduto.data = this.categorias;
+        this.dataSourceCategoriaProduto.data = this.carregaCategoriaProdutos;
       },
         errorResponse => {
           this.service.msg('erro ao buscar', true);
@@ -419,13 +510,14 @@ export class ProdutoComponent implements OnInit {
   //------------------------------------------------------- FUNÇÕES FORMULARIO TIPO PRODUTOS
   submitTipoProduto() {
     this.progress = true;
-    this.service.salvarTipoProduto(this.formTipoProduto.value)
+    console.log(this.formTipoProduto.value);
+    this.tipoProdService.salvarTipoProduto(this.formTipoProduto.value)
       .subscribe(response => {
         this.formTipoProduto.setValue(response);
         this.tipoProdutoNovo = response;
         this.carregarTipoProdutos();
         this.listarTipoProduto(this.paginaTipo, this.tamanhoTipo);
-        this.service.msg('Tipo produto Salvo!');        
+        this.service.msg('Tipo produto Salvo!');
         this.progress = false;
       }, errorResponse => {
         this.errors = errorResponse.error.errors;
@@ -442,7 +534,7 @@ export class ProdutoComponent implements OnInit {
     }).afterClosed().subscribe(responseClose => {
       if (responseClose) {
         this.progress = true;
-        this.service.deleteTipoProduto(this.formTipoProduto.value)
+        this.tipoProdService.deleteTipoProduto(this.formTipoProduto.value)
           .subscribe(responseDelete => {
             this.service.msg('Tipo Produto deletado!');
             this.tipoProdutoNovo = new TipoProduto();
@@ -465,27 +557,23 @@ export class ProdutoComponent implements OnInit {
       data: tipoProduto
     }).afterClosed().subscribe(response => {
       if (response) {
-
-        this.service.deleteTipoProduto(tipoProduto)
+        this.tipoProdService.deleteTipoProduto(tipoProduto)
           .subscribe(responseDelete => {
             this.service.msg('Tipo produto deletado!');
             if (!this.filtroTableTipo) {
               this.listarTipoProduto(this.paginaTipo, this.tamanhoTipo);
-         
             } else {
-              this.service.buscarTipoProdutos(this.filtroTableTipo, this.paginaTipo, this.tamanhoTipo)
+              this.tipoProdService.buscarTipoProdutos(this.filtroTableTipo, this.paginaTipo, this.tamanhoTipo)
                 .subscribe(responseFilter => {
                   this.tipos = responseFilter.content;
                   this.totalElementosTipo = responseFilter.totalElements;
                   this.paginaTipo = responseFilter.number;
                   this.dataSourceTipoProduto.data = this.tipos;
-   
                 });
             }
-            
+
           }, errorResponse => {
             this.service.msg('Ocorreu um erro ao deletar o tipo', true)
-             
           });
       }
     });
@@ -494,8 +582,7 @@ export class ProdutoComponent implements OnInit {
   atualizarTipoProduto(event: Event) {
     event.preventDefault();
     this.progress = true;
-    console.log(this.formTipoProduto.value)
-    this.service.atualizarTipoProduto(this.formTipoProduto.value)
+    this.tipoProdService.atualizarTipoProduto(this.formTipoProduto.value)
       .subscribe(response => {
         this.service.msg('Tipo Produto Atualizado!');
         this.carregarTipoProdutos();
@@ -509,9 +596,8 @@ export class ProdutoComponent implements OnInit {
   }
 
   detalhesTipoProduto(tipoProduto: TipoProduto) {
-    this.dialog.open(ProdutoDetalheComponent, {      
+    this.dialog.open(ProdutoDetalheComponent, {
       data: tipoProduto
-      
     }).afterClosed().subscribe(response => {
       if (!this.filtroTableTipo) {
         this.listarTipoProduto(this.paginaTipo, this.tamanhoTipo);
@@ -528,7 +614,7 @@ export class ProdutoComponent implements OnInit {
   }
 
   listarTipoProduto(pagina = 0, tamanho = 4) {
-    this.service.getAllTipoProdutos(pagina, tamanho)
+    this.tipoProdService.getAllTipoProdutos(pagina, tamanho)
       .subscribe(response => {
         this.tipos = response.content;
         this.totalElementosTipo = response.totalElements;
@@ -540,7 +626,7 @@ export class ProdutoComponent implements OnInit {
         this.service.msg('Não foi possível Carregar Tipos de Produtos', true);
       });
   }
- 
+
   novoTipoProduto(event: Event) {
     event.preventDefault();
     this.tipoProdutoNovo = new TipoProduto();
@@ -548,8 +634,8 @@ export class ProdutoComponent implements OnInit {
   }
 
   carregarTipoProdutos() {
-    this.service.carregarTipoProdutos()
-      .subscribe(response => {       
+    this.tipoProdService.carregarTipoProdutos()
+      .subscribe(response => {
         this.carregaTipoProdutos = response;
       }, errorResponse => {
         this.errors = errorResponse.error.errors;
@@ -560,7 +646,7 @@ export class ProdutoComponent implements OnInit {
 
   applyFilterTipo(event: Event) {
     this.filtroTableTipo = (event.target as HTMLInputElement).value;
-    this.service.buscarTipoProdutos(this.filtroTableTipo, 0, 4)
+    this.tipoProdService.buscarTipoProdutos(this.filtroTableTipo, 0, 4)
       .subscribe(response => {
         this.tipos = response.content;
         this.totalElementosTipo = response.totalElements;
@@ -572,6 +658,144 @@ export class ProdutoComponent implements OnInit {
         });
     this.dataSourceTipoProduto.filter = this.filtroTableTipo.trim().toLowerCase();
 
+  }
+
+  //------------------------------------------------------- FUNÇÕES FORMULARIO ADICIONAL
+  submitAdicional() {
+    this.progress = true;
+    this.adicionalService.salvarAdicional(this.formAdicional.value)
+      .subscribe(response => {
+        this.formAdicional.setValue(response);
+        this.adicionalNovo = response;
+        this.carregarAdicionais();
+        this.listarAdicional(this.paginaAdicional, this.tamanhoAdicional);
+        this.adicionalService.msg(' Salvo!');
+        this.progress = false;
+      }, errorResponse => {
+        this.errors = errorResponse.error.errors;
+        console.log(errorResponse);
+        this.adicionalService.msg(this.errors, true);
+        this.progress = false;
+      });
+  }
+
+  atualizarAdicional() {
+    this.progress = true;
+    this.adicionalService.atualizarAdicional(this.formAdicional.value)
+      .subscribe(response => {
+        this.adicionalService.msg('Adicional Atualizado!');
+        this.carregarAdicionais();
+        this.listarAdicional(this.paginaAdicional, this.tamanhoAdicional);
+        this.progress = false;
+      }, errorResponse => {
+        this.progress = false;
+        this.errors = errorResponse.error.errors;
+        this.adicionalService.msg(this.errors, true);
+      });
+  }
+
+
+  carregarAdicionais() {
+    this.adicionalService.carregarAdicionais()
+      .subscribe(response => {        
+        this.carregaAdicionais = response;
+      }, errorResponse => {
+        //  this.errors = errorResponse.error.errors;
+        console.log(errorResponse);
+        this.adicionalService.msg('Não foi possível Carregar os Adicionais', true);
+      });
+  }
+
+  listarAdicional(pagina = 0, tamanho = 4) {
+    this.adicionalService.listaAdicionais(pagina, tamanho)
+      .subscribe(response => {
+        this.adicionais = response.content;
+        this.totalElementosAdicionais = response.totalElements;
+        this.paginaAdicional = response.number;
+        this.dataSourceAdicional.data = this.adicionais;
+      }, errorResponse => {
+        this.errors = errorResponse.error.errors;
+        console.log(errorResponse);
+        this.adicionalService.msg('Não foi possível listar os adicionais', true);
+      });
+  }
+
+  novoAdicional(event: Event) {
+    event.preventDefault();
+    this.adicionalNovo = new Adicional();
+    this.formAdicional.reset();
+  }
+
+  applyFilterAdicional(event: Event) {
+    this.filtroTableAdicional = (event.target as HTMLInputElement).value;
+    this.adicionalService.buscarAdicional(this.filtroTableAdicional, 0, 4)
+      .subscribe(response => {
+        this.adicionais = response.content;
+        this.totalElementosAdicionais = response.totalElements;
+        this.paginaAdicional = response.number;
+        this.dataSourceAdicional.data = this.adicionais;
+      },
+        errorResponse => {
+          this.adicionalService.msg('erro ao buscar', true);
+        });
+    this.dataSourceAdicional.filter = this.filtroTableAdicional.trim().toLowerCase();
+
+  }
+
+  PreparadeletarAdicionalForm(adicional: Adicional, event: Event) {
+    event.preventDefault();
+    this.dialog.open(ProdutoDeleteComponent, {
+      data: adicional
+    }).afterClosed().subscribe(responseClose => {
+      if (responseClose) {
+        this.progress = true;
+        this.adicionalService.deletarAdicional(this.formAdicional.value)
+          .subscribe(responseDelete => {
+            this.adicionalService.msg('Adicional deletado!');
+            this.adicionalNovo = new Adicional();
+            this.formAdicional.reset();
+            this.carregarAdicionais();
+            this.listarAdicional(this.paginaAdicional, this.tamanhoAdicional)
+            this.progress = false;
+          }, errorResponse => {
+            this.progress = false;
+            this.errors = errorResponse.error.errors;
+            this.adicionalService.msg(this.errors, true);
+          });
+      }
+    });
+  }
+
+  PreparadeletarAdicionalList(adicional: Adicional, event: Event) {
+    event.preventDefault();
+    this.dialog.open(ProdutoDeleteComponent, {
+      data: adicional
+    }).afterClosed().subscribe(response => {
+      if (response) {
+
+        this.adicionalService.deletarAdicional(adicional)
+          .subscribe(responseDelete => {
+            this.adicionalService.msg('Adicional deletado!');
+            if (!this.filtroTableAdicional) {
+              this.listarAdicional(this.paginaAdicional, this.tamanhoAdicional);
+
+            } else {
+              this.adicionalService.buscarAdicional(this.filtroTableAdicional, this.paginaAdicional, this.tamanhoAdicional)
+                .subscribe(responseFilter => {
+                  this.adicionais = responseFilter.content;
+                  this.totalElementosAdicionais = responseFilter.totalElements;
+                  this.paginaAdicional = responseFilter.number;
+                  this.dataSourceAdicional.data = this.adicionais;
+
+                });
+            }
+
+          }, errorResponse => {
+            this.adicionalService.msg('Ocorreu um erro ao deletar Adicional', true)
+
+          });
+      }
+    });
   }
 
 
@@ -597,6 +821,13 @@ export class ProdutoComponent implements OnInit {
     this.paginaTipo = event.pageIndex;
     this.tamanhoTipo = event.pageSize;
     this.listarTipoProduto(this.paginaTipo, this.tamanhoTipo);
+  }
+
+  paginarAdicional(event: PageEvent) {
+    this.paginaAdicional = event.pageIndex;
+    this.tamanhoAdicional = event.pageSize;
+    this.listarAdicional(this.paginaAdicional, this.tamanhoAdicional = event.pageSize
+    );
   }
 
 }

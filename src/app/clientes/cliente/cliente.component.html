@@ -5,7 +5,7 @@
             <mat-icon>add</mat-icon>
             Novo Cliente
         </ng-template>
-        
+
         <mat-card>
 
             <br><br>
@@ -41,23 +41,18 @@
 
                         <mat-form-field fxFlex="15">
                             <mat-label>Data de Cadastro :</mat-label>
-                            <input matInput [textMask]="{mask: mascaraData, guide: false}"
+                            <input matInput  mask="(00) 0 0000-0000"
                                 value="{{ clientenovo.dataCadastro }}" disabled>
                         </mat-form-field>
 
                     </div>
-
+ 
                     <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
                         fxLayoutGap.lt-md="0px">
 
                         <mat-form-field class="full-width" fxFlex="30">
                             <mat-label>Nome Completo: </mat-label>
-                            <input matInput formControlName="nome" placeholder="Nome Completo:">
-                            <mat-error *ngIf="formulario.controls.nome.errors && !formulario.controls.nome.pristine">
-                                <mat-error *ngIf="formulario.controls.nome.errors.required ">
-                                    Campo nome é obrigatório.
-                                </mat-error>
-                            </mat-error>
+                            <input matInput formControlName="nome" placeholder="Nome Completo:">                           
                         </mat-form-field>
 
                         <mat-form-field fxFlex="15" color="primary">
@@ -73,7 +68,7 @@
 
                         <mat-form-field fxFlex="12">
                             <mat-label>CPF:</mat-label>
-                            <input matInput formControlName="cpf" [textMask]="{mask: mascaraCpf, guide: false}"
+                            <input matInput formControlName="cpf" mask="000.000.000-00"
                                 placeholder="CPF:">
                             <mat-error *ngIf="formulario.controls.cpf.errors && !formulario.controls.cpf.pristine">
                                 <mat-error *ngIf="formulario.controls.cpf.errors.required ">
@@ -84,7 +79,8 @@
 
                         <mat-form-field fxFlex="13">
                             <mat-label>RG:</mat-label>
-                            <input matInput formControlName="rg" placeholder="RG:" [textMask]="{mask: mascaraRg, guide: false}">
+                            <input matInput formControlName="rg" placeholder="RG:"
+                            mask="00.000.000-00">
                         </mat-form-field>
 
                         <div fxFlex=10>
@@ -114,14 +110,13 @@
 
                         <mat-form-field fxFlex="15">
                             <mat-label>Celular:</mat-label>
-                            <input matInput formControlName="celular" [textMask]="{mask: mascaraCelular, guide: false}"
+                            <input matInput formControlName="celular" mask="(00) 0 0000-0000"
                                 name="celular">
                         </mat-form-field>
 
                         <mat-form-field fxFlex="12">
                             <mat-label>Telefone:</mat-label>
-                            <input matInput formControlName="telefone"
-                                [textMask]="{mask: mascaraTelefoneFixo, guide: false}" name="telefone">
+                            <input matInput formControlName="telefone" mask="(00) 0000-0000" name="telefone">
                         </mat-form-field>
 
                     </div>
@@ -271,6 +266,7 @@
                     <mat-label>Buscar Cliente</mat-label>
                     <input matInput placeholder="Buscar" (keyup)="applyFilter($event)">
                 </mat-form-field>
+
                 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 full-width">
 
 

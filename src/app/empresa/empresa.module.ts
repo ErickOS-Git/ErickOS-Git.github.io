@@ -18,8 +18,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { TextMaskModule } from 'angular2-text-mask';
+import { NgxMaskModule } from 'ngx-mask'
 import { LogoModalComponent } from './logo-modal/logo-modal.component';
+import { from } from 'rxjs';
 
 
 @NgModule({
@@ -44,10 +45,10 @@ import { LogoModalComponent } from './logo-modal/logo-modal.component';
     MatButtonModule,
     MatRadioModule,
     MatPaginatorModule,
-    TextMaskModule,
-    
+    NgxMaskModule
+
   ],
-  exports:[
+  exports: [
     EmpresaComponent,
     LogoModalComponent
   ]

@@ -10,9 +10,6 @@ import { ClienteDetalheComponent } from '../cliente-detalhe/cliente-detalhe.comp
 import { PageEvent } from '@angular/material/paginator';
 
 
-const SecondaryWhite = '#006ddd';
-const PrimaryBlue = '#ffffff';
-
 @Component({
   selector: 'app-cliente',
   templateUrl: './cliente.component.html',
@@ -21,6 +18,7 @@ const PrimaryBlue = '#ffffff';
 
 export class ClienteComponent implements OnInit {
 
+  // mascaras para o formulário
   mascaraData = MascaraUtil.mascaraNascimento;
   mascaraCpf = MascaraUtil.mascaraCpf;
   mascaraRg = MascaraUtil.mascaraRg;
@@ -93,7 +91,7 @@ export class ClienteComponent implements OnInit {
     });
   }
 
-  listaClientes(pagina = 0, tamanho = 4) {
+  listaClientes(pagina = 0, tamanho = 4) { 
     this.service.getClienteAll(pagina, tamanho)
       .subscribe(response => {
         this.clientes = response.content;
@@ -125,14 +123,16 @@ export class ClienteComponent implements OnInit {
 
   submit() {
     this.progress = true;
+        
     this.service
       .salvar(this.formulario.value)
       .subscribe(response => {
         this.service.msg('Cliente salvo com sucesso.');
         this.formulario.setValue(response);
-        this.clientenovo = response;
+        this.clientenovo = response;        
         this.listaClientes();
         this.progress = false;
+        
       }, errorResponse => {
         this.errors = errorResponse.error.errors;
         this.service.msg(this.errors, true);

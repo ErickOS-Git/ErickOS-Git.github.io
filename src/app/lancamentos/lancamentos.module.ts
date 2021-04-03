@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { FornecedoresRoutingModule } from './fornecedores-routing.module';
-import { FornecedorComponent } from './fornecedor/fornecedor.component';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -18,20 +15,27 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { FornecedorDeleteComponent } from './fornecedor-delete/fornecedor-delete.component';
-
-import { FornecedorDetalheComponent } from './fornecedor-detalhe/fornecedor-detalhe.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
+import { LancamentosRoutingModule } from './lancamentos-routing.module';
+import { LancamentoComponent } from './lancamento/lancamento.component';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepper } from '@angular/material/stepper';
 import { NgxMaskModule } from 'ngx-mask';
+import {MatChipsModule} from '@angular/material/chips';
 
 
 
 @NgModule({
-  declarations: [FornecedorComponent, FornecedorDeleteComponent, FornecedorDetalheComponent],
+  declarations: [LancamentoComponent],
   imports: [
     CommonModule,
-    FornecedoresRoutingModule,
+    LancamentosRoutingModule,
     MatButtonModule,
     BrowserAnimationsModule,
     FormsModule,
@@ -51,12 +55,15 @@ import { NgxMaskModule } from 'ngx-mask';
     NgxMaskModule,
     MatPaginatorModule,
     MatSlideToggleModule,
-    
+    MatSelectModule,
+    MatAutocompleteModule,
+    NgxMatSelectSearchModule,
+    MatStepperModule,    
+    MatCheckboxModule,
+    MatChipsModule,   
   ],
   exports: [
-    FornecedorComponent,
-    FornecedorDeleteComponent,
-    FornecedorDeleteComponent
+    LancamentoComponent
   ]
 })
-export class FornecedoresModule { }
+export class LancamentosModule { }

@@ -18,13 +18,14 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { TextMaskModule } from 'angular2-text-mask';
+
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { MatSelectModule } from '@angular/material/select';
 import { ProdutoDetalheComponent } from './produto-detalhe/produto-detalhe.component';
 import { ProdutoDeleteComponent } from './produto-delete/produto-delete.component';
+import { NgxMaskModule } from 'ngx-mask';
 
 
 @NgModule({
@@ -48,7 +49,7 @@ import { ProdutoDeleteComponent } from './produto-delete/produto-delete.componen
     ReactiveFormsModule,
     FlexLayoutModule,
     MatProgressSpinnerModule,
-    TextMaskModule,
+    NgxMaskModule,
     MatPaginatorModule,
     MatSlideToggleModule,
     MatSelectModule,
@@ -60,4 +61,4 @@ import { ProdutoDeleteComponent } from './produto-delete/produto-delete.componen
     ProdutoDetalheComponent
   ]
 })
-export class ProdutosModule { }
+export class ProdutosModule { } 

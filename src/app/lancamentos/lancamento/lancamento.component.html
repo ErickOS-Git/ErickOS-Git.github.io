@@ -1,0 +1,444 @@
+<mat-card>
+    <br> <br>
+
+    <mat-card-title>{{ lancamentoNovo.id ? "Atualizar" : "Novo Pedido" }}</mat-card-title> <br>
+
+    <mat-divider></mat-divider> <br>
+
+    <mat-horizontal-stepper #firststepper>
+
+
+        <mat-step [stepControl]="formularioLancamento" errorMessage="Falta preencher alguns dados.">
+            <form [formGroup]="formularioLancamento">
+
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
+
+                    <mat-form-field fxFlex="15">
+                        <mat-label>ID :</mat-label>
+                        <input matInput value="{{ lancamentoNovo.id }}" disabled>
+                    </mat-form-field>
+
+                </div>
+
+                <ng-template matStepLabel>Informe o dados do cliente</ng-template>
+
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
+
+                    <mat-form-field fxFlex="15">
+                        <mat-label>Data de lancamento:</mat-label>
+                        <input matInput type="date" formControlName="dataLancamento" required>
+                        <mat-error *ngIf="formularioLancamento.controls.dataLancamento.errors">
+                            <mat-error *ngIf="formularioLancamento.controls.dataLancamento.errors ">
+                                Selecione a data!
+                            </mat-error>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
+
+
+
+                    <mat-card-subtitle fxFlex="100">
+
+                        <h4 class="breadcrumb-item active"> Informações do cliente </h4>
+
+                    </mat-card-subtitle>
+                </div>
+
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
+
+                    <mat-form-field fxFlex=100>
+                        <mat-select formControlName="cliente" placeholder="Selecione o cliente"
+                            (ngModelChange)="onCliente($event)">
+                            <!-- place ngx-mat-select-search inside mat-option to allow opening without initial selection -->
+                            <mat-option>
+                                <ngx-mat-select-search [formControl]="clienteFiltro" [searching]="searching">
+                                </ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option *ngFor="let cliente of filtroClientes | async" [value]="cliente">
+                                {{ cliente.nome }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="formularioLancamento.controls.nomeCliente.errors">
+                            <mat-error *ngIf="formularioLancamento.controls.nomeCliente.errors ">
+                                Favor selecionar o cliente!
+                            </mat-error>
+                        </mat-error>
+                    </mat-form-field>
+
+                </div>
+
+                <br>
+
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
+
+                    <mat-form-field class="full-width" fxFlex="30">
+                        <mat-label>Nome Completo: </mat-label>
+                        <input matInput formControlName="nomeCliente" readonly="true" placeholder="Nome Completo:">
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex="15" color="primary">
+                        <mat-label>Data de nascimento</mat-label>
+                        <input matInput type="text" formControlName="dataNascimento" readonly="true">
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex="12">
+                        <mat-label>CPF:</mat-label>
+                        <input matInput formControlName="cpf" mask="000.000.000-00" placeholder="CPF:" readonly="true">
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex="30">
+                        <mat-label>Email:</mat-label>
+                        <input matInput type="email" formControlName="email" placeholder="Email:" readonly="true">
+                    </mat-form-field>
+
+
+                </div>
+
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
+
+
+                    <mat-form-field fxFlex="15">
+                        <mat-label>Celular:</mat-label>
+                        <input matInput formControlName="celular" mask="(00) 0 0000-0000" name="celular"
+                            readonly="true">
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex="12">
+                        <mat-label>Telefone:</mat-label>
+                        <input matInput formControlName="telefone" mask="(00) 0000-0000" readonly="true">
+                    </mat-form-field>
+
+
+                    <section class="example-section">
+                        <label class="example-margin">Local de entrega:</label>
+                        <mat-radio-group formControlName="entrega">
+                            <mat-radio-button class="example-margin" value="p">Principal</mat-radio-button>
+                            <mat-radio-button class="example-margin" value="s">Secundário</mat-radio-button>
+                        </mat-radio-group>
+                        <mat-error
+                            *ngIf="formularioLancamento.controls.entrega.errors && !formularioLancamento.controls.entrega.value">
+                            <mat-error *ngIf="formularioLancamento.controls.entrega.errors">
+                                Favor informa o local de entrega!
+                            </mat-error>
+                        </mat-error>
+                    </section>
+
+
+
+
+                </div>
+
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
+                    <mat-card-subtitle fxFlex="100">
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active"> Endereço Principal </li>
+                        </ol>
+                    </mat-card-subtitle>
+                </div>
+
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
+
+                    <mat-form-field fxFlex="12">
+                        <mat-label>CEP:</mat-label>
+                        <input matInput placeholder="CEP:" value="{{ clienteSelecionado.cep1 }}" readonly="true">
+                    </mat-form-field>
+
+
+                    <mat-form-field fxFlex="45">
+                        <mat-label>Bairro:</mat-label>
+                        <input matInput placeholder="Endereço:" value="{{ clienteSelecionado.bairro1  }}"
+                            readonly="true">
+                    </mat-form-field>
+
+
+                    <mat-form-field fxFlex="45">
+                        <mat-label>Endereço:</mat-label>
+                        <input matInput placeholder="Endereço:" value="{{ clienteSelecionado.lagradouro1 }}"
+                            readonly="true">
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex="45">
+                        <mat-label>Complemento:</mat-label>
+                        <input matInput placeholder="Complemento:" value="{{ clienteSelecionado.complemento1 }}"
+                            readonly="true">
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex="45">
+                        <mat-label>Nº :</mat-label>
+                        <input matInput placeholder="Numero:" value="{{ clienteSelecionado.numero1 }}" readonly="true">
+                    </mat-form-field>
+
+                </div>
+
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="100px"
+                    fxLayoutGap.lt-md="0px">
+                    <mat-card-subtitle fxFlex="100">
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active"> Endereço Secundário </li>
+                        </ol>
+                    </mat-card-subtitle>
+                </div>
+
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
+
+                    <mat-form-field fxFlex="12">
+                        <mat-label>CEP:</mat-label>
+                        <input matInput placeholder="CEP:" value="{{ clienteSelecionado.cep2 }}" readonly="true">
+                    </mat-form-field>
+
+
+                    <mat-form-field fxFlex="45">
+                        <mat-label>Bairro:</mat-label>
+                        <input matInput placeholder="Endereço:" value="{{ clienteSelecionado.bairro2 }}"
+                            readonly="true">
+                    </mat-form-field>
+
+
+                    <mat-form-field fxFlex="45">
+                        <mat-label>Endereço:</mat-label>
+                        <input matInput placeholder="Endereço:" value="{{ clienteSelecionado.lagradouro2 }}"
+                            readonly="true">
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex="45">
+                        <mat-label>Complemento:</mat-label>
+                        <input matInput placeholder="Complemento:" value="{{ clienteSelecionado.complemento2 }}"
+                            readonly="true">
+                    </mat-form-field>
+
+                    <mat-form-field fxFlex="45">
+                        <mat-label>Nº :</mat-label>
+                        <input matInput placeholder="Complemento:" value="{{ clienteSelecionado.numero2 }}"
+                            readonly="true">
+                    </mat-form-field>
+
+                </div>
+
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
+                    <!-- matStepperNext -->
+                    <mat-spinner [diameter]="30" *ngIf="progress"> </mat-spinner>
+                    <button mat-raised-button color="primary" (click)="ngSubmit()"
+                        *ngIf="!lancamentoNovo.id && !progress"
+                        [disabled]="formularioLancamento.controls.nomeCliente.invalid">
+                        <mat-icon>send</mat-icon>
+                        Confirmar Cliente
+                    </button>
+
+                    <button mat-raised-button color="primary" style="background-color: #28a745; color: white;"
+                        *ngIf="lancamentoNovo.id && !progress" disabled=true>
+                        <mat-icon>done</mat-icon>
+                        Confirmado
+                    </button>
+
+                    <mat-spinner [diameter]="30" *ngIf="progressAtualizarCli"> </mat-spinner>
+                    <button mat-raised-button color="primary" (click)="ngSubmit()"
+                        style="background-color: #caab1e; color: white;"
+                        *ngIf="lancamentoNovo.id && !progressAtualizarCli">
+                        <mat-icon>update</mat-icon>
+                        Atualizar Informações/Cliente
+                    </button>
+
+
+                    <button mat-raised-button color="warn" *ngIf="lancamentoNovo.id && !progressDelete"
+                        (click)="cancelarPedido($event)">
+                        <mat-icon>delete</mat-icon>
+                        Cancelar Pedido
+                    </button>
+                    <mat-spinner [diameter]="30" *ngIf="progressDelete"> </mat-spinner>
+
+                    <button mat-raised-button matStepperNext color="primary" *ngIf="lancamentoNovo.id"
+                        [disabled]="formularioLancamento.controls.nomeCliente.invalid">
+                        <mat-icon>send</mat-icon>
+                        Avançar
+                    </button>
+
+                </div>
+
+            </form>
+        </mat-step>
+        <!-- #docregion label -->
+        <mat-step [stepControl]="formularioProduto" errorMessage="Falta preencher alguns dados."
+            label="Produtos do pedido">
+            <!-- #enddocregion label -->
+            <form [formGroup]="formularioProduto">
+
+                <div class="input-row" fxLayout="column" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
+                    <mat-card-subtitle fxFlex="100">
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active"> Produtos </li>
+                        </ol>
+                    </mat-card-subtitle>
+                </div>
+
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
+                    <button mat-raised-button (click)="adicionarProduto($event)" style=" color: #28a745" fxFlex="10">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
+
+                <div formArrayName="produtos">
+
+                    <div *ngFor="let listaProd of formularioProduto.get('produtos')['controls']; let i = index">
+
+                        <div [formGroupName]="i">
+
+                            <div class="content">
+
+                                <mat-card class="mat-elevation-z4">
+                                    <mat-card-header>
+                                        <mat-card-title>Produto {{ i + 1}}</mat-card-title>
+                                    </mat-card-header>
+                                    <mat-card-content>
+
+                                        <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                                            fxLayoutGap.lt-md="0px">
+                                            <mat-form-field>
+                                                <mat-select formControlName="produto" placeholder="Selecione o produto"
+                                                    (ngModelChange)="onProduto($event, i, listaProd)" [disabled]="listaProd.controls.id.value">
+                                                    <!-- place ngx-mat-select-search inside mat-option to allow opening without initial selection -->
+                                                    <mat-option>
+                                                        <ngx-mat-select-search [formControl]="produtosFiltro"
+                                                            [searching]="searching">
+                                                        </ngx-mat-select-search>
+                                                    </mat-option>
+                                                    <mat-option *ngFor="let produto of filtroProdutos | async"
+                                                        [value]="produto">
+                                                        {{ produto.nomeProduto }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+
+                                            <div>
+                                                <mat-form-field>
+                                                    <mat-label>Nome produto:</mat-label>
+                                                    <input matInput formControlName="nomeProduto" readonly="true">
+                                                    <mat-error *ngIf="listaProd.controls.nomeProduto.errors">
+                                                        <mat-error *ngIf="listaProd.controls.nomeProduto.errors ">
+                                                            Favor selecionar o produto!
+                                                        </mat-error>
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+
+                                            <mat-form-field>
+                                                <mat-label>Quantidade:</mat-label>
+                                                <input matInput formControlName="quantidade"
+                                                    (keyup)="TotalProd($event, i)" maxlength="2"
+                                                    placeholder="Quantidade:">
+                                            </mat-form-field>
+
+                                            <mat-form-field>
+                                                <mat-label>Valor unitário:</mat-label>
+                                                <input matInput formControlName="valorVenda" placeholder="Valor"
+                                                    value="" readonly="true" mask="separator.2">
+                                                <span matPrefix>R$&nbsp;</span>
+                                            </mat-form-field>
+
+                                            <mat-form-field>
+                                                <mat-label>Total</mat-label>
+                                                <input matInput formControlName="totalProduto" placeholder="Total"
+                                                    readonly="true" value="" mask="separator.2">
+                                                <span matPrefix>R$&nbsp;</span>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                                            fxLayoutGap.lt-md="0px">
+                                            <div formArrayName="adicionais">
+                                                <label>Escolha os adicionais *</label>
+                                                <div *ngFor="let adc of listaProd.get('adicionais')['controls']; let j = index"
+                                                    [formGroupName]="j">
+                                                    <span class="example-list-section">
+                                                        <mat-checkbox class="margin"
+                                                            formControlName="selecionaAdicionais" [checked]="checked">
+
+                                                            <input matInput appearance="outline" formControlName="nome"
+                                                                readonly="true"> {{ j + 1}}
+
+                                                        </mat-checkbox>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <mat-card-actions>
+                                            <button mat-icon-button (click)="removerProduto(i)"color="warn">
+                                                <mat-icon>delete</mat-icon>
+                                                Apagar Item
+                                            </button>                                          
+                                        </mat-card-actions>
+
+
+
+                                    </mat-card-content>
+
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
+                    <mat-form-field fxFlex="12">
+                        <mat-label>Total produto</mat-label>
+                        <input matInput formControlName="totalProduto" placeholder="Total" readonly="true" value=""
+                            mask="separator.2">
+                        <span matPrefix>R$&nbsp;</span>
+                    </mat-form-field>
+                </div> -->
+
+
+                <div class="input-row" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px"
+                    fxLayoutGap.lt-md="0px">
+                    <button mat-raised-button matStepperPrevious>
+                        <mat-icon>arrow_back</mat-icon>
+                        Back
+                    </button>
+
+                    <!-- matStepperNext -->
+                    <button mat-raised-button *ngIf="lancamentoNovo.id"
+                        [disabled]="formularioProduto.invalid" (click)="salvarProduto($event)">
+                        <mat-icon>send</mat-icon>
+                        Confirmar Produtos
+                    </button>
+
+                    <button mat-raised-button color="warn" *ngIf="lancamentoNovo.id && !progressDelete"
+                        (click)="cancelarPedido($event);firststepper.reset()">
+                        <mat-icon>delete</mat-icon>
+                        Cancelar Pedido
+                    </button>
+                    <mat-spinner [diameter]="30" *ngIf="progressDelete"> </mat-spinner>
+
+                  
+                    <button mat-raised-button matStepperNext color="primary" *ngIf="lancamentoNovo.id"
+                        [disabled]="formularioLancamento.controls.nomeCliente.invalid">
+                        <mat-icon>send</mat-icon>
+                        Avançar
+                    </button>
+
+                </div>
+            </form>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Done</ng-template>
+            <p>You are now done.</p>
+            <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button>Back</button>
+                <button mat-button (click)="firststepper.reset()">Reset</button>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+</mat-card>
